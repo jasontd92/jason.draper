@@ -8,19 +8,19 @@ const timeline = [
     when: 'Now',
     role: 'Technical Co-Founder',
     org: 'Punchcard (YC S23)',
-    note: 'AI-powered audit automation. Building production agent systems that hold to an audit-grade bar — repeatable, accurate, and auditable in themselves.',
+    note: 'Co-founded a Y Combinator–backed platform bringing audit-grade AI to financial auditors. I own the agent systems behind it — the orchestration, grounding, and reasoning traces that make LLM output defensible under review.',
   },
   {
     when: 'Before',
     role: 'Co-Founder & CTO',
     org: 'FairQuote',
-    note: 'Home-service management platform. Built the product and engineering org from the ground up.',
+    note: 'Founding CTO. Took a home-service management platform 0→1 — product, architecture, and the first engineering team.',
   },
   {
     when: 'Before that',
     role: 'Missile Launch Officer · Emergency War Order Planner (ICBM)',
     org: 'U.S. Air Force — 321st Missile Squadron',
-    note: '4+ years active duty. Stood nuclear alert and planned emergency war orders — an environment where "mostly right" is not a passing grade.',
+    note: '4+ years active duty on nuclear alert, authoring emergency war-order plans for ICBM forces — where a single error is unacceptable, and where zero-defect stopped being a slogan.',
   },
 ];
 
@@ -28,12 +28,12 @@ const systems = [
   {
     name: 'Creed',
     href: '/systems/creed',
-    desc: 'An autonomous QA engineering engine — 24/7, scales horizontally.',
+    desc: 'Autonomous QA engine — tests 24/7 and scales by adding agents, not headcount.',
   },
   {
     name: 'CoAudit',
     href: '/systems/coaudit',
-    desc: 'An audit agent embedded in Excel and Word, with a reasoning trace on every judgment.',
+    desc: 'Audit agent inside Excel and Word that makes thousands of audit-grade judgments per statement, each with a reasoning trace.',
   },
 ];
 ---
@@ -47,11 +47,10 @@ const systems = [
       <header class="page-head">
         <h1>About</h1>
         <p class="lede">
-          I'm a technical co-founder who builds AI agent systems for work that
-          can't afford to be wrong. My path there was unusual: I spent four-plus
-          years in the U.S. Air Force as an ICBM missile launch officer and
-          emergency war order planner before founding companies. Zero-defect
-          isn't a slogan I picked up in tech — it's where I started.
+          I build AI agents for work that can't be wrong. Four-plus years as a
+          U.S. Air Force nuclear missile launch officer taught me zero-defect
+          before I shipped a line of production code — now I engineer that
+          standard into LLM systems auditors can trust.
         </p>
       </header>
     </Reveal>
@@ -80,9 +79,9 @@ const systems = [
       <h2 class="section-title">What I build</h2>
       <p class="body">
         My throughline is <strong>reliability engineering for LLMs</strong>: the
-        model is rarely the hard part — trustworthy outcomes come from
+        model is rarely the hard part — trustworthy output comes from
         orchestration, grounding, and making an agent's work reviewable. Two
-        systems I've built:
+        systems I've built and shipped:
       </p>
     </Reveal>
     <div class="sys-grid">
@@ -104,9 +103,9 @@ const systems = [
     <Reveal client:visible>
       <h2 class="section-title">Focus &amp; contact</h2>
       <p class="body">
-        I care about AI agent orchestration, LLM reliability engineering, audit
-        automation, and regulated-industry AI. I'm targeting Product
-        Engineering and Forward Deployed Engineering roles.
+        I work where AI agent orchestration, LLM reliability, and
+        regulated-industry automation meet. Open to Product Engineering and
+        Forward Deployed Engineering roles.
       </p>
       <GlassCard class="contact">
         <p>The best way to reach me is LinkedIn.</p>

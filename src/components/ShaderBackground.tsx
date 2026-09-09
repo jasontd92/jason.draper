@@ -47,7 +47,7 @@ export default function ShaderBackground({
       type="4x4"
       size={2}
       scale={1}
-      speed={reduce ? 0 : 0.36}
+      speed={reduce ? 0 : 0.25}
       fit="cover"
     />
   );
