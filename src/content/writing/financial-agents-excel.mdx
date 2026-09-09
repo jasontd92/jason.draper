@@ -1,0 +1,77 @@
+---
+title: "Financial Agents: The Company That Built Excel Is Not the Best at Excel?"
+description: >-
+  Microsoft owns the file format, the app, frontier model access, and more Excel
+  telemetry than anyone alive — and still lost to better-designed Excel agents.
+  Two lessons: opinionated tool architecture, and compound expertise.
+pubDate: 2026-07-28
+tags:
+  - AI agents
+  - agent design
+  - audit automation
+  - LLMs
+---
+
+**Microsoft Copilot is the undisputed champion for spreadsheet work**
+
+...said no one I've ever talked to. And the irony of course is not lost.
+
+So how are the creators of Excel not the tool of choice for creating/editing .xlsx files? I recently read this comparison between three different Excel agents by [Nicolas Bustamante](https://www.linkedin.com/in/bustamantenicolas/) ([the writeup](https://x.com/nicbstme/article/2026366805154140494)).
+
+Here's the two standout differentiators, matching our experience building [Punchcard (YC S23)](https://www.linkedin.com/company/punchcard-dot-com/), an AI-native platform for financial auditors. I believe they apply to agent design broadly, and certainly to any agent in the financial space.
+
+First, a quick TLDR on the writeup; Three tools (Copilot, Claude, and ShortcutAI) were all studied, then put up against the same benchmark:
+
+> "Create a detailed 10-year DCF valuation model for Apple (AAPL). I need professional-grade output with assumptions, revenue build-up, free cash flow projections, terminal value, and an implied share price."
+
+Measured in just about every dimension you'd care about, Claude and Shortcut AI ran circles around Copilot. What's the gap? There are two big ones.
+
+## "Opinionated Architecture" Wins
+
+Simplicity is the ultimate sophistication. But simplicity that works doesn't come without opinions.
+
+Everyone loves simplicity. But to simplify complex jobs in a way that actually works requires making decisions in the face of competing tradeoffs. In other words, forming opinions.
+
+Copilot's excel interactions have essentially no "harness" around them - it is literally handed (drumroll...) a javascript library 😂 I laugh because if there ever were an "AI wrapper", Microsoft has successfully shipped a crowning example. Open-ended, zero guidance, ask the LLM to re-create the world from scratch on every interaction.
+
+Competitors such as Claude are provided the same exact library/set of abilities as a fallback, but prioritize the use of varying degrees of structured tools.
+
+First, the basic rundown of what a "tool" consists of:
+
+```
+1) Instructions, such as when or how to use it
+2) Allowed set of actions
+3) A response (or feedback) when the action succeeds or fails
+```
+
+In the Agent world, "structured tools" sounds soo 2024. The latest move is simplifying agent architecture with every new model release. Which is directionally correct, but ironically, here's what opinionated tools afford to that end more than ever:
+
+- **High integrity interactions**, where risk of mistakes or oversights aren't left to chance or temperament. As an example, Copilot had zero protections against the agent overwriting cells that already existed. Something very easy to do when working across large sets of data with multiple sheets.
+- **High integrity context (communication).** A naive agent design tries to pack every Do and Don't into the system prompt. An underutilized alternative is tucking those same rules into tool calls, which allow for alignment at known points for the agent, providing the advantage of reminding about current/next steps in the moment they're relevant. It's similar to getting water at a marathon - much more efficient to grab a drink from the sideline in the moment you're thirsty rather than carrying a whole bucket with you from the starting line. This is an underrated way to make Agents super smart even across diverse, long-running jobs requiring extensive amounts of context. Information can be packed in and presented ONLY when it is actually relevant, and not a moment too soon (or too late).
+- **Tradeoff:** across millions of possible actions in a tool like excel, you have to selectively limit tools to a core set, otherwise the LLM simply gets lost among the sea of options. This is where the real, opinionated sophistication is shown - what is worth a dedicated tool call and what isn't?
+
+## Compound Expertise is Ideal
+
+If I were hiring someone for this job and listed ideal qualifications, what would the average vs. one-in-a-million candidate have?
+
+If you have ever used an agent that felt magical, compound expertise was certainly behind it.
+
+In addition to knowing their way in and out of Excel, the two winning agents had sandboxes in which they could run python scripts, which enables financial models and operations too complex to be expressed in Excel formulas alone. Copilot again, was handed only a javascript library that simply controls reading/writing to .xlsx.
+
+A starting point that will get you 80% through building most agents is asking, "what set minimum set of tools and information would a human need to tackle this problem?" The next level up is asking, in addition, "if I were hiring for this job and listing ideal qualifications, what would the one-in-a-million candidate have?"
+
+Because an agent is built once, the one-in-a-million set of qualifications is entirely on the table. As such, you can hire an expert in Excel and python, skills which produce a better outcome when used together.
+
+In financial audit, this might look like an agent that has the context of your entire client engagement, on top of executing specific audit procedures and queries.
+
+## Agent Design Beats Advantage
+
+Microsoft owns the file format. They wrote the application. They have frontier model access and more Excel telemetry than anyone alive.
+
+They still lost. (👀❗️)
+
+None of those advantages resulted in a winning solution alone. The agents that won were crafted with the insight, care, and judgment about how agents receive and act on information, as well as enabling them creatively, beyond what one would think a task requires.
+
+---
+
+*Originally published [on LinkedIn](https://www.linkedin.com/pulse/financial-agents-company-built-excel-best-jason-draper-l0psc/).*
