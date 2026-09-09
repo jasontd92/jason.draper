@@ -16,3 +16,6 @@ pnpm-debug.log*
 .DS_Store
 # vercel
 .vercel
+
+# generated design canvas payload (regenerable via seed-canvas)
+design/*-directions.html

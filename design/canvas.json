@@ -1,0 +1,13 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "A · Spatial OS — home", "x": 0, "y": 0, "w": 1240, "h": 840 },
+    { "file": "Editorial.dc.html", "title": "B · Editorial glass — home", "x": 1360, "y": 0, "w": 1240, "h": 840 },
+    { "file": "Gallery.dc.html", "title": "C · Scene gallery — home", "x": 2720, "y": 0, "w": 1240, "h": 840 }
+  ],
+  "annotations": [
+    { "id": "dir-a", "x": 0, "y": -168, "w": 560, "text": "A · SPATIAL OS\nThe literal umbrelOS feel: floating glass widgets over an ambient scene, a pill dock.\nBest at: personality, instant \"this is different.\"\nTradeoff: most work to keep tidy; risks style over substance." },
+    { "id": "dir-b", "x": 1360, "y": -168, "w": 560, "text": "B · EDITORIAL GLASS\nReading-first. One quiet column, serif headline, glass only where it earns it.\nBest at: making the writing the hero; ages well.\nTradeoff: calmer, less \"wow\" on first load." },
+    { "id": "dir-c", "x": 2720, "y": -168, "w": 560, "text": "C · SCENE GALLERY\nYour analogies lead. Each piece is a big scene card (line-art now, 3D renders later).\nBest at: showcasing the visuals you want to make.\nTradeoff: leans on having strong art per post." }
+  ],
+  "launch": { "view": "canvas" }
+}

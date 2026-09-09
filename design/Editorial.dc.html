@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Inter:wght@400;500;600&display=swap');
+    body { margin: 0; font-family: 'Inter', system-ui, sans-serif; }
+    a { color: #93b8ff; text-decoration: none; } a:hover { color: #c7dbff; }
+  </style>
+</helmet>
+
+<div style="position:relative; width:1240px; height:840px; overflow:hidden;
+     background:
+       radial-gradient(70rem 46rem at 50% -20%, rgba(59,130,246,0.10), transparent 60%),
+       #0a0a0f;
+     color:#f5f5f5;">
+
+  <!-- minimal top bar -->
+  <div style="display:flex; align-items:center; justify-content:space-between;
+       padding:30px 56px; border-bottom:1px solid rgba(255,255,255,0.07);">
+    <span style="font-weight:600; letter-spacing:-0.01em; font-size:16px;">Jason Draper</span>
+    <div style="display:flex; gap:26px; font-size:14.5px; color:#a0a0a0;">
+      <a>Writing</a><a>Systems</a><a>About</a>
+    </div>
+  </div>
+
+  <!-- centered editorial hero -->
+  <div style="max-width:760px; margin:0 auto; padding:86px 24px 0; text-align:center;">
+    <div style="font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:#93b8ff; font-weight:600;">
+      Technical Co-Founder · Punchcard</div>
+    <h1 style="font-family:'Newsreader', Georgia, serif; font-weight:400;
+        font-size:60px; line-height:1.08; letter-spacing:-0.02em; margin:22px 0 0;">
+      Reliability, for work that<br><em style="color:#cfe0ff;">can't be mostly right.</em></h1>
+    <p style="color:#a0a0a0; font-size:18px; line-height:1.6; margin:24px auto 0; max-width:52ch;">
+      Missile launch officer, then founder. I write about making AI agents dependable enough for regulated work.</p>
+  </div>
+
+  <!-- reading list -->
+  <div style="max-width:760px; margin:70px auto 0; padding:0 24px;">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px;">
+      <span style="font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color:#6b6b76;">Writing</span>
+      <a style="font-size:13.5px;">All →</a>
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,0.08); padding:22px 0; display:flex; gap:20px; align-items:baseline;">
+      <span style="color:#6b6b76; font-size:13px; width:96px; flex:none;">Dec 2025</span>
+      <div>
+        <h3 style="font-family:'Newsreader',serif; font-weight:500; font-size:26px; letter-spacing:-0.01em; margin:0;">
+          Albert Einstein Walks Into a Library</h3>
+        <p style="color:#a0a0a0; font-size:15px; margin:6px 0 0;">Why LLMs miss things in complex documents.</p>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,0.08); padding:22px 0; display:flex; gap:20px; align-items:baseline; opacity:0.55;">
+      <span style="color:#6b6b76; font-size:13px; width:96px; flex:none;">Soon</span>
+      <div>
+        <h3 style="font-family:'Newsreader',serif; font-weight:500; font-size:26px; letter-spacing:-0.01em; margin:0;">
+          Demand is infinite</h3>
+        <p style="color:#a0a0a0; font-size:15px; margin:6px 0 0;">Managing a fleet of AI agents.</p>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.08);"></div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
