@@ -22,7 +22,16 @@ const year = new Date().getFullYear();
         rel="noopener me">LinkedIn</a
       >
     </nav>
-    <p class="copy">© {year} Jason Draper</p>
+    <p class="copy">
+      © {year} Jason Draper
+      <span class="credit"
+        >· Wallpaper by <a
+          href="https://unsplash.com/photos/9XngoIpxcEo"
+          target="_blank"
+          rel="noopener">Jr Korpa</a
+        ></span
+      >
+    </p>
   </div>
 </footer>
 
@@ -59,6 +68,12 @@ const year = new Date().getFullYear();
   }
   .copy {
     color: var(--text-muted);
+  }
+  .credit {
+    opacity: 0.75;
+  }
+  .credit a:hover {
+    color: var(--accent);
   }
   @media (max-width: 640px) {
     .inner {

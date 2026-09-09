@@ -4,12 +4,13 @@
  * Design tokens (locked per PRD — do not deviate on colors / radii)   *
  * ------------------------------------------------------------------ */
 :root {
-  --bg-base: #08080c;
+  --bg-base: #0a0713;
   --bg-glass: rgba(255, 255, 255, 0.05);
   --border-glass: rgba(255, 255, 255, 0.1);
-  --text-primary: #f5f5f5;
-  --text-muted: #9a9aaa;
-  --accent: #3b82f6;
+  --text-primary: #f6f2fb;
+  --text-muted: #a89db8;
+  --accent: #e34676;
+  --accent-2: #8b3fd4;
   --radius: 16px;
   --blur: 16px;
 
@@ -41,13 +42,15 @@ body {
   min-height: 100vh;
   margin: 0;
   background-color: var(--bg-base);
-  /* Warm-undertoned dark base with visible layered depth for glassmorphism blur. */
+  /* Neon particle wallpaper (photo by Jr Korpa, Unsplash) behind a dark scrim so
+     long-form text stays readable; the colour bleeds through as ambient glow. */
   background-image:
-    radial-gradient(ellipse 80% 60% at 70% -20%, rgba(59, 130, 246, 0.18), transparent 50%),
-    radial-gradient(ellipse 70% 50% at -5% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 50% 110%, rgba(59, 130, 246, 0.1), transparent 50%),
-    radial-gradient(ellipse 100% 80% at 80% 50%, rgba(99, 70, 46, 0.08), transparent 60%);
-  background-attachment: fixed;
+    linear-gradient(180deg, rgba(10, 7, 19, 0.74) 0%, rgba(10, 7, 19, 0.9) 60%, rgba(10, 7, 19, 0.95) 100%),
+    url('/images/bg-neon.jpg');
+  background-size: cover, cover;
+  background-position: center top, center top;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -62,7 +65,7 @@ a {
 }
 
 ::selection {
-  background: rgba(59, 130, 246, 0.35);
+  background: rgba(227, 70, 118, 0.4);
   color: #fff;
 }
 
