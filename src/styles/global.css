@@ -4,13 +4,13 @@
  * Design tokens (locked per PRD — do not deviate on colors / radii)   *
  * ------------------------------------------------------------------ */
 :root {
-  --bg-base: #0a0713;
+  --bg-base: #06090b;
   --bg-glass: rgba(255, 255, 255, 0.05);
   --border-glass: rgba(255, 255, 255, 0.1);
-  --text-primary: #f6f2fb;
-  --text-muted: #a89db8;
-  --accent: #e34676;
-  --accent-2: #8b3fd4;
+  --text-primary: #eef4f3;
+  --text-muted: #93a3a1;
+  --accent: #2fd8c6;
+  --accent-2: #2aa9c9;
   --radius: 16px;
   --blur: 16px;
 
@@ -42,15 +42,8 @@ body {
   min-height: 100vh;
   margin: 0;
   background-color: var(--bg-base);
-  /* Neon particle wallpaper (photo by Jr Korpa, Unsplash) behind a dark scrim so
-     long-form text stays readable; the colour bleeds through as ambient glow. */
-  background-image:
-    linear-gradient(180deg, rgba(10, 7, 19, 0.74) 0%, rgba(10, 7, 19, 0.9) 60%, rgba(10, 7, 19, 0.95) 100%),
-    url('/images/bg-neon.jpg');
-  background-size: cover, cover;
-  background-position: center top, center top;
-  background-repeat: no-repeat, no-repeat;
-  background-attachment: fixed, fixed;
+  /* Ambient dithering shader (Paper Shaders) is layered behind via .bg-shader;
+     .bg-scrim sits above it for text contrast. */
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -64,8 +57,34 @@ a {
   text-decoration: none;
 }
 
+/* Ambient shader wallpaper + readability scrim (both fixed, behind content) */
+.bg-shader {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.62;
+}
+.bg-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* darken toward the reading column so text always has contrast */
+  background:
+    radial-gradient(120% 90% at 50% 32%, rgba(6, 9, 11, 0.25) 0%, rgba(6, 9, 11, 0.72) 62%, rgba(6, 9, 11, 0.9) 100%),
+    linear-gradient(180deg, rgba(6, 9, 11, 0.35), rgba(6, 9, 11, 0.6));
+}
+@media (max-width: 720px) {
+  /* stronger scrim on narrow screens where text sits over more of the canvas */
+  .bg-scrim {
+    background:
+      radial-gradient(140% 90% at 50% 30%, rgba(6, 9, 11, 0.4) 0%, rgba(6, 9, 11, 0.82) 60%, rgba(6, 9, 11, 0.94) 100%);
+  }
+}
+
 ::selection {
-  background: rgba(227, 70, 118, 0.4);
+  background: rgba(47, 216, 198, 0.38);
   color: #fff;
 }
 
