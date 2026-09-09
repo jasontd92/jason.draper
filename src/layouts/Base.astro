@@ -12,6 +12,9 @@ interface Props {
   canonicalUrl?: string;
   /** OpenGraph type — "website" (default) or "article". */
   ogType?: 'website' | 'article';
+  /** Background treatment: "field" (full warp) or "frame" (masked to edges,
+      keeps the centre clean behind long-form text). */
+  bg?: 'field' | 'frame';
 }
 
 const {
@@ -20,6 +23,7 @@ const {
   ogImage,
   canonicalUrl,
   ogType = 'website',
+  bg = 'field',
 } = Astro.props;
 
 const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? 'https://jasondraper.ai';
@@ -127,7 +131,7 @@ const personSchema = {
   </head>
   <body>
     <div class="bg-shader" aria-hidden="true">
-      <ShaderBackground client:only="react" />
+      <ShaderBackground client:only="react" shape="warp" mask={bg === 'frame' ? 'frame' : 'none'} />
     </div>
     <div class="bg-scrim" aria-hidden="true"></div>
     <Header />
