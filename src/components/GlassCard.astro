@@ -1,0 +1,46 @@
+---
+interface Props {
+  class?: string;
+  /** Render as a different element (e.g. "article", "section"). */
+  as?: keyof HTMLElementTagNameMap;
+}
+const { class: className, as: Tag = 'div' } = Astro.props;
+---
+
+<Tag class:list={['glass-card', className]}>
+  <slot />
+</Tag>
+
+<style>
+  .glass-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  /* Graceful degradation: on devices/browsers without backdrop-filter,
+     fall back to a solid translucent panel so glass never becomes
+     unreadable transparent text. Also eases GPU cost on low-end devices. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-card {
+      background: rgba(20, 20, 28, 0.85);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .glass-card:hover {
+      transform: none;
+    }
+  }
+</style>

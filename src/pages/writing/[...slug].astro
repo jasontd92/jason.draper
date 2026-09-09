@@ -1,0 +1,138 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('writing');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const url = new URL(`/writing/${post.id}`, Astro.site).href;
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+// Article schema — one per post, in addition to the site-wide Person schema.
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.description,
+  author: { '@type': 'Person', name: 'Jason Draper', url: Astro.site?.href },
+  datePublished: post.data.pubDate.toISOString().slice(0, 10),
+  ...(post.data.updatedDate && {
+    dateModified: post.data.updatedDate.toISOString().slice(0, 10),
+  }),
+  ...(post.data.tags && { keywords: post.data.tags.join(', ') }),
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  publisher: { '@type': 'Person', name: 'Jason Draper' },
+  url,
+};
+---
+
+<Base
+  title={post.data.title}
+  description={post.data.description}
+  ogImage={post.data.ogImage}
+  canonicalUrl={post.data.canonicalUrl}
+  ogType="article"
+>
+  <script
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(articleSchema)}
+  />
+
+  <article class="post">
+    <header class="post-head">
+      <a class="back" href="/writing">← Writing</a>
+      <h1>{post.data.title}</h1>
+      <div class="meta">
+        <span>Jason Draper</span>
+        <span aria-hidden="true">·</span>
+        <time datetime={post.data.pubDate.toISOString()}>
+          {fmt(post.data.pubDate)}
+        </time>
+      </div>
+      {
+        post.data.tags && (
+          <ul class="tags">
+            {post.data.tags.map((t) => (
+              <li>{t}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="post-foot">
+      <a class="back" href="/writing">← Back to all writing</a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .post {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 7vw, 4.5rem) 1.5rem 2rem;
+  }
+  .back {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+  .post-head h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    margin: 1rem 0 0.9rem;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+  }
+  .tags li {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border-glass);
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+  }
+  .prose {
+    margin-top: 2.5rem;
+  }
+  .post-foot {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-glass);
+  }
+</style>

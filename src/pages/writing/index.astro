@@ -1,0 +1,140 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import GlassCard from '../../components/GlassCard.astro';
+import Reveal from '../../components/Reveal.tsx';
+
+const posts = (await getCollection('writing')).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+---
+
+<Base
+  title="Writing"
+  description="Essays by Jason Draper on LLM reliability, AI agent orchestration, and building audit-grade automation for regulated industries."
+>
+  <section class="wrap">
+    <Reveal client:load>
+      <header class="page-head">
+        <h1>Writing</h1>
+        <p>
+          Practical notes on making AI agents reliable enough for work that
+          can't be “mostly right” — LLM failure modes, orchestration, and
+          audit-grade automation. Analogy-heavy, anti-hype.
+        </p>
+      </header>
+    </Reveal>
+
+    {
+      posts.length === 0 ? (
+        <p class="empty">New writing is on the way.</p>
+      ) : (
+        <ul class="list">
+          {posts.map((post, i) => (
+            <Reveal client:visible delay={i * 0.06}>
+              <li>
+                <a class="card-link" href={`/writing/${post.id}`}>
+                  <GlassCard as="article" class="post-card">
+                    <p class="date">{fmt(post.data.pubDate)}</p>
+                    <h2>{post.data.title}</h2>
+                    <p class="desc">{post.data.description}</p>
+                    {post.data.tags && (
+                      <ul class="tags">
+                        {post.data.tags.slice(0, 5).map((t) => (
+                          <li>{t}</li>
+                        ))}
+                      </ul>
+                    )}
+                    <span class="read">Read →</span>
+                  </GlassCard>
+                </a>
+              </li>
+            </Reveal>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .wrap {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: clamp(3rem, 8vw, 5rem) 1.5rem 2rem;
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.75rem;
+  }
+  .page-head p {
+    color: var(--text-muted);
+    max-width: 58ch;
+    font-size: 1.05rem;
+    margin: 0 0 2.5rem;
+  }
+  .empty {
+    color: var(--text-muted);
+  }
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .card-link {
+    display: block;
+  }
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .date {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    margin: 0;
+  }
+  .post-card h2 {
+    font-size: 1.45rem;
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .desc {
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0.3rem 0 0;
+  }
+  .tags li {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border-glass);
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+  }
+  .read {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+  }
+</style>

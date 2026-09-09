@@ -1,0 +1,238 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import GlassCard from '../components/GlassCard.astro';
+import Reveal from '../components/Reveal.tsx';
+
+const posts = (await getCollection('writing')).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+const featured = posts.slice(0, 3);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+---
+
+<Base
+  title="Jason Draper"
+  description="Technical Co-Founder at Punchcard (YC S23). I build production AI agent systems for regulated work — where “mostly right” isn't good enough. Writing on LLM reliability, agent orchestration, and audit automation."
+>
+  <section class="hero">
+    <Reveal client:load>
+      <p class="eyebrow">Technical Co-Founder @ Punchcard · YC S23</p>
+      <h1>
+        I build AI agents that have to be
+        <span class="grad">right the first time.</span>
+      </h1>
+      <p class="lede">
+        Production agent systems for regulated work — where “mostly right”
+        isn't good enough. Before startups, I planned emergency war orders and
+        stood alert as a nuclear missile launch officer in the U.S. Air Force.
+        That's where I learned what zero-defect actually costs.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="/writing">Read the writing</a>
+        <a
+          class="btn ghost"
+          href="https://linkedin.com/in/jasontdraper"
+          target="_blank"
+          rel="noopener me">Connect on LinkedIn →</a
+        >
+      </div>
+    </Reveal>
+  </section>
+
+  {
+    featured.length > 0 && (
+      <section class="section" aria-labelledby="featured-heading">
+        <Reveal client:visible>
+          <div class="section-head">
+            <h2 id="featured-heading">Featured writing</h2>
+            <a class="more" href="/writing">All writing →</a>
+          </div>
+        </Reveal>
+        <div class="grid">
+          {featured.map((post, i) => (
+            <Reveal client:visible delay={i * 0.08}>
+              <a
+                class="card-link"
+                href={`/writing/${post.id}`}
+                aria-label={post.data.title}
+              >
+                <GlassCard as="article" class="post-card">
+                  <p class="date">{fmt(post.data.pubDate)}</p>
+                  <h3>{post.data.title}</h3>
+                  <p class="desc">{post.data.description}</p>
+                  {post.data.tags && (
+                    <ul class="tags">
+                      {post.data.tags.slice(0, 4).map((t) => (
+                        <li>{t}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <span class="read">Read →</span>
+                </GlassCard>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .hero {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: clamp(4rem, 12vw, 8rem) 1.5rem clamp(2.5rem, 6vw, 4rem);
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+    margin: 0 0 1.4rem;
+    max-width: 18ch;
+  }
+  .grad {
+    background: linear-gradient(120deg, #fff 10%, var(--accent) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .lede {
+    max-width: 60ch;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    color: var(--text-muted);
+    margin: 0 0 2rem;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.7rem 1.3rem;
+    font-weight: 600;
+    font-size: 0.98rem;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      background 0.18s ease;
+  }
+  .btn.primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
+  }
+  .btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 38px rgba(59, 130, 246, 0.5);
+  }
+  .btn.ghost {
+    color: var(--text-primary);
+    border: 1px solid var(--border-glass);
+    background: var(--bg-glass);
+  }
+  .btn.ghost:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-2px);
+  }
+
+  .section {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 2rem;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-head h2 {
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .more {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .more:hover {
+    color: var(--text-primary);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: 1.25rem;
+  }
+  .card-link {
+    display: block;
+    height: 100%;
+  }
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.55rem;
+  }
+  .date {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    margin: 0;
+  }
+  .post-card h3 {
+    font-size: 1.25rem;
+    font-weight: 650;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin: 0;
+    flex: 1;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0.35rem 0 0;
+  }
+  .tags li {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border-glass);
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+  }
+  .read {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+  }
+</style>

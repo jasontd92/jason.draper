@@ -1,0 +1,153 @@
+---
+title: Albert Einstein Walks Into a Library
+description: >-
+  Why large language models struggle with complex document analysis — false
+  confidence, attention drift, context rot, and domain ambiguity — told through
+  an extended library analogy.
+pubDate: 2025-12-28
+updatedDate: 2025-12-28
+tags:
+  - LLMs
+  - audit automation
+  - AI reliability
+  - agents
+---
+
+*Why ChatGPT can't handle your Financial Statement review as well as you might think.*
+
+This post will spare a long-winded intro about how powerful LLMs are and cut straight to the chase of a core problem—where they struggle with complex audit documents (such as financial statements).
+
+Consider the following analogy.
+
+## The Library Problem
+
+Suppose you are a library assistant, and are given the daunting assignment of auditing every book in local libraries for scientific errors.
+
+To assist in this—you immediately think of your new neighbor, Albert Einstein—who is great at just this type of thing.
+
+### False Confidence and Attention Drift
+
+*Pitfalls #1 and #2*
+
+Before you bother Albert with going all the way to an actual library, you decide to run a quick test: the neighborhood "My Little Library," one of those boxes out front where passers-by can take and leave books as they please.
+
+Given the job of finding scientific errors, he gets to work reading each book and returns with a comprehensive-looking list, complete with thoughtful reasoning for each.
+
+You scan the list and—pleasantly surprised—his findings look legitimate. Very promising. Everything passes the "vibe check".
+
+Albert is now ready for the REAL task—read all scientific books in your local library, with the same goal—audit it for mistakes. Crucially, you tell him:
+
+> "I don't want just some mistakes—we need to find ALL of them".
+
+Feeling confident, you and Albert drive to the first library.
+
+On arrival, Albert enters and begins working his magic. After only a short time, he emerges.
+
+> "Wow!", you say, "Finished already?"
+
+Albert shrugs.
+
+> "Most of the books I happened to grab were biographies, bedtime stories, travel guides… I almost didn't know where to begin. And this series called Twilight was full of scientific errors—that alone took up all the time I had."
+
+You pause, realizing a couple mistakes were made.
+
+**The Technical Breakdown**
+
+- **False Confidence:** The test run in your neighborhood was not actually representative of the scale and complexity of the real-world job to be done. This is fortunately a very forgivable Dunning-Kruger[^1] error—over-confidence due to lack of authentic experience.
+- **Attention Drift:** Albert experienced "Attention Drift". During chain-of-thought reasoning, LLMs can get distracted, spending a majority of their tokens thinking about the wrong problems, at the expense of comprehensive checklist coverage.[^2]
+
+### Context Rot and Performance
+
+*Pitfalls #3 and #4*
+
+Okay: the library isn't organized in a way that helps him succeed. Scattered books. Unlabeled shelves. If you truly need every scientific error, he needs to be able to access the relevant sections, fast.
+
+As smart as Albert is, it would be much more efficient if the books were properly catalogued and sorted first. He agrees that this sounds like a great first step and returns to the library.
+
+It takes him hours (and plenty of snack breaks), but finally he's done organizing. Every book is properly categorized and shelved.
+
+> "Now," you say, "find all the errors!"
+
+Albert goes back in. A few minutes later, he emerges again.
+
+> "Look, I did find several mistakes," he admits, "but I started getting tired and losing track of everything I was finding."
+
+**The Technical Breakdown**
+
+- **Context Rot:** This refers to behavior where LLMs, given large amounts of information, do not treat all inputs equally, and will appear to "forget" entire sections of input. While frequently benchmarked and reported to excel on "Needle In a Haystack" style tests (retrieving a specific detail), real-world use cases involve multi-faceted questions—more akin to finding multiple needles in a haystack, and understanding how they relate to one another. These situations show a significant accuracy dropoff over long contexts.[^3]
+- **Performance:** Even if a model can do the work, it often can't do it quickly or efficiently enough for real workflows. This can usually be solved in part through "parallelization"—dividing and conquering—though without careful orchestration can produce fragmented outcomes.
+
+### Domain Knowledge & Industry Conventions
+
+*Pitfall #5*
+
+Okay, so even Albert Einstein can't read all the books in the library in one sitting. You devise a new plan—send in multiple Alberts at a time. This way, they can split up the work into manageable portions amongst themselves.
+
+Ready for a fresh attempt, and newly organized library, you send in your small army of Einsteins—with one critical addition to their task (people have started to notice how well this is going)—they now need to find ALL mistakes, in EVERY section.
+
+The Alberts, ecstatic to be amongst equals for the first time, run into the library to complete their task. In a relatively short time they emerge with good news—they were able to audit every single book.
+
+Amazing!
+
+But as you study their findings, you still notice some hiccups along the way.
+
+One Albert flagged a passage asserting Batman would beat Superman as "logically inconsistent."
+
+Another in the audit section thought SALY was a misspelled name, not recognizing the obvious reference to "Same As Last Year".
+
+Clearly, not experts in those particular areas.
+
+**The Technical Breakdown**
+
+- **Domain Ambiguity:** Sometimes, LLMs are given tasks that (to the world at large) are totally ambiguous as to the "right" answer. Given two sides, sound arguments can be presented for both. Financial statements often carry with them requirements very specific to a given industry, and even audit firm. There is no "right" answer in the original training data—we need to provide it.
+
+Interestingly, these exact ambiguous situations are prime breeding grounds for AI hallucination.[^4]
+
+### Putting it all together (and then some)
+
+You now choose to assign section leaders, each with a team. You give each leader instructions & coaching related to their specific section, and make one thing very clear:
+
+> "Stay focused. Keep your team grounded in their section-specific coaching."
+
+For good measure, you equip them with aids that will help them do their job even better—such as clipboards to track their findings, calculators for accurate math, and reading glasses to not miss any fine text.
+
+Singing a cheery song from their schoolboy days, the Alberts march into the library and get straight to work.
+
+What feels like moments later (relative to when it was just solo Albert) the multitude emerges. Each section leader hands you a single list aggregated from findings across their entire team.
+
+Organized, comprehensive, and accurate.
+
+Mission accomplished. That would have taken you weeks!
+
+You deliver the results to your boss, who is astounded at not just a quicker, but also higher quality, turnaround than ever before. News of your success spreads quickly, and in no time at all you are appointed the National Head Librarian for driving such impactful outcomes.
+
+The Library Problem highlights some of the most fundamental challenges LLMs face for auditing complex financial statements. Several other challenges, and their solutions, are omitted to not distract from the main point.
+
+## What this means for financial statements
+
+AI is incredibly smart, as is Albert Einstein, but it turns out even modest financial documents represent a library-sized problem.
+
+Every number ties to other numbers, disclosures, and a narrative that must stay consistent. In other words, each number is its own multi-dimensional and interconnected story.
+
+Reviewing a single statement end-to-end—every footing, every cross-reference, every prior-year tie, every disclosure consistency check—means making thousands of independent decisions, each one its own small audit-grade judgment that has to hold up on its own.
+
+### Requisites for audit-grade analysis
+
+A perfect prompt to the best LLM today will only produce the results you're looking for on document equivalents of My Little Library.
+
+With real-world financial statements, where EVERY number must be checked for mathematical accuracy, consistency, and validity, there is a story being told, and one which holds a bar of zero mistakes.
+
+"Audit-grade" AI must be:
+
+- Repeatable
+- Accurate
+- Auditable in itself
+
+These constraints ARE achievable, but only through structuring, orchestrating, and enabling this powerful technology to produce aggregated, defensible outcomes.
+
+This is exactly the standard we built toward at [Punchcard](https://punchcard.com)—a reliable, comprehensive, and timely analysis of the work auditors are presenting, built in collaboration with auditors, audit partners, and engineers.
+
+[^1]: [Chart: Dunning–Kruger Effect](https://commons.wikimedia.org/wiki/File:Dunning%E2%80%93Kruger_Effect_01.svg)
+[^2]: [LLM Focus: Attention Isn't Enough](https://cline.bot/blog/focus-attention-isnt-enough)
+[^3]: [Context Rot: How Increasing Input Tokens Impacts LLM Performance](https://research.trychroma.com/context-rot)
+[^4]: [OpenAI: Why Language Models Hallucinate](https://openai.com/index/why-language-models-hallucinate/)
