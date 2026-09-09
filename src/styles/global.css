@@ -64,6 +64,11 @@ a {
 main {
   flex: 1 0 auto;
 }
+/* Home only: let the launcher fill main so its icons can centre vertically. */
+main:has(.launcher) {
+  display: flex;
+  flex-direction: column;
+}
 
 /* Ambient shader wallpaper + readability scrim (both fixed, behind content) */
 .bg-shader {
