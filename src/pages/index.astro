@@ -1,238 +1,344 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import GlassCard from '../components/GlassCard.astro';
 import Reveal from '../components/Reveal.tsx';
 
 const posts = (await getCollection('writing')).sort(
   (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
 );
-const featured = posts.slice(0, 3);
+const latest = posts[0];
+
+const systems = (await getCollection('systems'))
+  .filter((s) => s.data.status === 'active')
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+const systemNames = systems.map((s) => s.data.name).join(' · ');
 
 const fmt = (d: Date) =>
-  d.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 ---
 
 <Base
   title="Jason Draper"
-  description="Technical Co-Founder at Punchcard (YC S23). I build production AI agent systems for regulated work — where “mostly right” isn't good enough. Writing on LLM reliability, agent orchestration, and audit automation."
+  description="Technical Co-Founder at Punchcard (YC S23). Missile launch officer turned founder, building AI agents reliable enough for regulated work. Writing on LLM reliability, agent orchestration, and audit automation."
 >
-  <section class="hero">
+  <section class="launcher">
     <Reveal client:load>
-      <p class="eyebrow">Technical Co-Founder @ Punchcard · YC S23</p>
-      <h1>
-        I build AI agents that have to be
-        <span class="grad">right the first time.</span>
-      </h1>
-      <p class="lede">
-        Production agent systems for regulated work — where “mostly right”
-        isn't good enough. Before startups, I planned emergency war orders and
-        stood alert as a nuclear missile launch officer in the U.S. Air Force.
-        That's where I learned what zero-defect actually costs.
-      </p>
-      <div class="cta">
-        <a class="btn primary" href="/writing">Read the writing</a>
-        <a
-          class="btn ghost"
-          href="https://linkedin.com/in/jasontdraper"
-          target="_blank"
-          rel="noopener me">Connect on LinkedIn →</a
-        >
+      <div class="greeting">
+        <p class="status">
+          <span class="dot" aria-hidden="true"></span>
+          Building at Punchcard · Utah
+        </p>
+        <h1>Right the <span class="grad">first time.</span></h1>
+        <p class="sub">
+          Missile launch officer, then founder. I build AI agents that can't be
+          “mostly right.”
+        </p>
       </div>
     </Reveal>
-  </section>
 
-  {
-    featured.length > 0 && (
-      <section class="section" aria-labelledby="featured-heading">
-        <Reveal client:visible>
-          <div class="section-head">
-            <h2 id="featured-heading">Featured writing</h2>
-            <a class="more" href="/writing">All writing →</a>
-          </div>
+    <nav class="apps" aria-label="Sections">
+      <Reveal client:visible>
+        <a class="app-tile" href="/writing">
+          <span class="app-icon writing">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 5h11M4 10h11M4 15h7"></path>
+              <path d="M15.5 17.5l4-4 2 2-4 4H15.5v-2z"></path>
+            </svg>
+          </span>
+          <span class="app-label">Writing</span>
+          <span class="app-glance">
+            {latest ? `Latest · ${fmt(latest.data.pubDate)}` : 'Coming soon'}
+          </span>
+        </a>
+      </Reveal>
+
+      <Reveal client:visible delay={0.08}>
+        <a class="app-tile" href="/systems">
+          <span class="app-icon systems">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="8" y="8" width="8" height="8" rx="1.5"></rect>
+              <path d="M10 8V5M14 8V5M10 19v-3M14 19v-3M8 10H5M8 14H5M19 10h-3M19 14h-3"></path>
+            </svg>
+          </span>
+          <span class="app-label">Systems</span>
+          <span class="app-glance">{systemNames || 'Coming soon'}</span>
+        </a>
+      </Reveal>
+
+      <Reveal client:visible delay={0.16}>
+        <a class="app-tile" href="/about">
+          <span class="app-icon about">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="9" r="3.2"></circle>
+              <path d="M6 19c0-3 2.7-5 6-5s6 2 6 5"></path>
+            </svg>
+          </span>
+          <span class="app-label">About</span>
+          <span class="app-glance">The arc</span>
+        </a>
+      </Reveal>
+    </nav>
+
+    {
+      latest && (
+        <Reveal client:visible delay={0.1}>
+          <a class="featured" href={`/writing/${latest.id}`}>
+            <div class="motif" aria-hidden="true">
+              <svg viewBox="0 0 300 220" fill="none" stroke="#93b8ff" stroke-width="1.4" stroke-opacity="0.7">
+                <rect x="150" y="46" width="52" height="130" rx="3" />
+                <line x1="150" y1="80" x2="202" y2="80" />
+                <line x1="150" y1="114" x2="202" y2="114" />
+                <line x1="150" y1="148" x2="202" y2="148" />
+                <rect x="212" y="46" width="52" height="130" rx="3" />
+                <line x1="212" y1="80" x2="264" y2="80" />
+                <line x1="212" y1="114" x2="264" y2="114" />
+                <line x1="212" y1="148" x2="264" y2="148" />
+                <circle cx="78" cy="88" r="17" />
+                <path d="M78 105 L78 152 M78 152 L60 182 M78 152 L96 182 M78 118 L56 142 M78 118 L100 142" />
+              </svg>
+            </div>
+            <div class="feat-body">
+              <span class="eyebrow">Featured writing</span>
+              <h2>{latest.data.title}</h2>
+              <p>{latest.data.description}</p>
+              <span class="open">Open →</span>
+            </div>
+          </a>
         </Reveal>
-        <div class="grid">
-          {featured.map((post, i) => (
-            <Reveal client:visible delay={i * 0.08}>
-              <a
-                class="card-link"
-                href={`/writing/${post.id}`}
-                aria-label={post.data.title}
-              >
-                <GlassCard as="article" class="post-card">
-                  <p class="date">{fmt(post.data.pubDate)}</p>
-                  <h3>{post.data.title}</h3>
-                  <p class="desc">{post.data.description}</p>
-                  {post.data.tags && (
-                    <ul class="tags">
-                      {post.data.tags.slice(0, 4).map((t) => (
-                        <li>{t}</li>
-                      ))}
-                    </ul>
-                  )}
-                  <span class="read">Read →</span>
-                </GlassCard>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-    )
-  }
+      )
+    }
+  </section>
 </Base>
 
 <style>
-  .hero {
-    max-width: 72rem;
+  .launcher {
+    max-width: 68rem;
     margin: 0 auto;
-    padding: clamp(4rem, 12vw, 8rem) 1.5rem clamp(2.5rem, 6vw, 4rem);
+    padding: clamp(3rem, 9vw, 6rem) 1.5rem clamp(3rem, 6vw, 5rem);
   }
-  .eyebrow {
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 0.9rem;
-    letter-spacing: 0.02em;
-    margin: 0 0 1rem;
+
+  /* greeting */
+  .greeting {
+    text-align: center;
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin: 0 0 1.1rem;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #7dd3a8;
+    box-shadow: 0 0 10px #7dd3a8;
   }
   h1 {
-    font-size: clamp(2.4rem, 6vw, 4.2rem);
-    line-height: 1.05;
+    font-size: clamp(2.6rem, 7vw, 4.6rem);
+    line-height: 1.02;
     letter-spacing: -0.03em;
     font-weight: 700;
-    margin: 0 0 1.4rem;
-    max-width: 18ch;
+    margin: 0;
   }
   .grad {
-    background: linear-gradient(120deg, #fff 10%, var(--accent) 90%);
+    background: linear-gradient(120deg, #fff 10%, var(--accent) 95%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
-  .lede {
-    max-width: 60ch;
+  .sub {
+    max-width: 46ch;
+    margin: 1.2rem auto 0;
     font-size: clamp(1.05rem, 2vw, 1.25rem);
     color: var(--text-muted);
-    margin: 0 0 2rem;
-  }
-  .cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    border-radius: 999px;
-    padding: 0.7rem 1.3rem;
-    font-weight: 600;
-    font-size: 0.98rem;
-    transition:
-      transform 0.18s ease,
-      box-shadow 0.18s ease,
-      background 0.18s ease;
-  }
-  .btn.primary {
-    background: var(--accent);
-    color: #fff;
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
-  }
-  .btn.primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 38px rgba(59, 130, 246, 0.5);
-  }
-  .btn.ghost {
-    color: var(--text-primary);
-    border: 1px solid var(--border-glass);
-    background: var(--bg-glass);
-  }
-  .btn.ghost:hover {
-    border-color: rgba(255, 255, 255, 0.18);
-    transform: translateY(-2px);
   }
 
-  .section {
-    max-width: 72rem;
-    margin: 0 auto;
-    padding: 1rem 1.5rem 2rem;
-  }
-  .section-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
+  /* app tiles */
+  .apps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
     margin-bottom: 1.5rem;
   }
-  .section-head h2 {
-    font-size: 1.5rem;
-    font-weight: 650;
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-  .more {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    font-weight: 500;
-  }
-  .more:hover {
-    color: var(--text-primary);
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
-    gap: 1.25rem;
-  }
-  .card-link {
-    display: block;
-    height: 100%;
-  }
-  .post-card {
+  .app-tile {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    gap: 0.55rem;
-  }
-  .date {
-    color: var(--text-muted);
-    font-size: 0.82rem;
-    margin: 0;
-  }
-  .post-card h3 {
-    font-size: 1.25rem;
-    font-weight: 650;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-  .desc {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin: 0;
-    flex: 1;
-  }
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    list-style: none;
-    padding: 0;
-    margin: 0.35rem 0 0;
-  }
-  .tags li {
-    font-size: 0.72rem;
-    color: var(--text-muted);
+    align-items: center;
+    gap: 0.85rem;
+    padding: 2rem 1.25rem;
+    border-radius: 22px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
     border: 1px solid var(--border-glass);
-    border-radius: 999px;
-    padding: 0.2rem 0.6rem;
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition:
+      transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.25s ease;
+    text-align: center;
   }
-  .read {
+  .app-tile:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .app-icon {
+    width: 92px;
+    height: 92px;
+    border-radius: 24px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+  .app-icon svg {
+    width: 44px;
+    height: 44px;
+  }
+  .app-icon.writing {
+    background: linear-gradient(150deg, rgba(59, 130, 246, 0.95), rgba(30, 58, 138, 0.95));
+  }
+  .app-icon.systems {
+    background: linear-gradient(150deg, rgba(120, 90, 220, 0.9), rgba(40, 30, 90, 0.95));
+  }
+  .app-icon.about {
+    background: linear-gradient(150deg, rgba(200, 120, 70, 0.9), rgba(90, 45, 25, 0.95));
+  }
+  .app-label {
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+  }
+  .app-glance {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  /* featured widget */
+  .featured {
+    display: flex;
+    align-items: stretch;
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    border: 1px solid var(--border-glass);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition:
+      transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.25s ease;
+  }
+  .featured:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .motif {
+    flex: 0 0 34%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(180deg, rgba(59, 130, 246, 0.16), rgba(8, 8, 12, 0.1));
+    border-right: 1px solid var(--border-glass);
+  }
+  .motif svg {
+    width: 100%;
+    height: 100%;
+    max-height: 200px;
+  }
+  .feat-body {
+    flex: 1;
+    padding: 2rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .eyebrow {
     color: var(--accent);
     font-weight: 600;
-    font-size: 0.9rem;
-    margin-top: 0.4rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .feat-body h2 {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 650;
+    line-height: 1.14;
+    letter-spacing: -0.02em;
+    margin: 0.6rem 0 0.5rem;
+  }
+  .feat-body p {
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .open {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.92rem;
+    margin-top: 1rem;
+  }
+
+  /* responsive */
+  @media (max-width: 720px) {
+    .apps {
+      grid-template-columns: 1fr;
+      max-width: 22rem;
+      margin-inline: auto;
+    }
+    .app-tile {
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 1.1rem;
+      padding: 1.1rem 1.25rem;
+      text-align: left;
+    }
+    .app-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      flex: none;
+    }
+    .app-icon svg {
+      width: 30px;
+      height: 30px;
+    }
+    .app-glance {
+      display: block;
+    }
+    .featured {
+      flex-direction: column;
+    }
+    .motif {
+      flex: none;
+      height: 150px;
+      border-right: none;
+      border-bottom: 1px solid var(--border-glass);
+    }
   }
 </style>

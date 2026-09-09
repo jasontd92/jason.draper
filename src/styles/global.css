@@ -4,14 +4,14 @@
  * Design tokens (locked per PRD — do not deviate on colors / radii)   *
  * ------------------------------------------------------------------ */
 :root {
-  --bg-base: #0a0a0f;
-  --bg-glass: rgba(255, 255, 255, 0.03);
-  --border-glass: rgba(255, 255, 255, 0.08);
+  --bg-base: #08080c;
+  --bg-glass: rgba(255, 255, 255, 0.05);
+  --border-glass: rgba(255, 255, 255, 0.1);
   --text-primary: #f5f5f5;
-  --text-muted: #a0a0a0;
+  --text-muted: #9a9aaa;
   --accent: #3b82f6;
   --radius: 16px;
-  --blur: 12px;
+  --blur: 16px;
 
   color-scheme: dark;
 }
@@ -41,11 +41,12 @@ body {
   min-height: 100vh;
   margin: 0;
   background-color: var(--bg-base);
-  /* Warm-undertoned dark base with soft layered depth (not pure black). */
+  /* Warm-undertoned dark base with visible layered depth for glassmorphism blur. */
   background-image:
-    radial-gradient(60rem 60rem at 80% -10%, rgba(59, 130, 246, 0.1), transparent 60%),
-    radial-gradient(50rem 50rem at 0% 10%, rgba(129, 90, 63, 0.08), transparent 55%),
-    radial-gradient(40rem 40rem at 50% 120%, rgba(59, 130, 246, 0.06), transparent 60%);
+    radial-gradient(ellipse 80% 60% at 70% -20%, rgba(59, 130, 246, 0.18), transparent 50%),
+    radial-gradient(ellipse 70% 50% at -5% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 110%, rgba(59, 130, 246, 0.1), transparent 50%),
+    radial-gradient(ellipse 100% 80% at 80% 50%, rgba(99, 70, 46, 0.08), transparent 60%);
   background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-sans);

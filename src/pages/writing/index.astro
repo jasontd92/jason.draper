@@ -127,9 +127,15 @@ const fmt = (d: Date) =>
   .tags li {
     font-size: 0.72rem;
     color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-glass);
     border-radius: 999px;
-    padding: 0.2rem 0.6rem;
+    padding: 0.22rem 0.65rem;
+    transition: all 0.2s ease;
+  }
+  .card-link:hover .tags li {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
   }
   .read {
     color: var(--accent);
