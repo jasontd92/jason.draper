@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap');
+    body { margin: 0; font-family: 'Space Grotesk', system-ui, sans-serif; }
+    a { color: #93b8ff; text-decoration: none; } a:hover { color: #c7dbff; }
+  </style>
+</helmet>
+
+<div style="position:relative; width:1240px; height:840px; overflow:hidden;
+     background:
+       radial-gradient(58rem 40rem at 80% -10%, rgba(59,130,246,0.20), transparent 60%),
+       #0a0a0f;">
+  <!-- blurred desktop behind the open app -->
+  <div style="position:absolute; inset:0; filter:blur(3px); opacity:0.5;
+       background-image:
+         linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+         linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+       background-size:46px 46px;"></div>
+
+  <!-- app window -->
+  <div style="position:absolute; left:50%; top:44px; transform:translateX(-50%); width:1000px; height:752px;
+       border-radius:22px; overflow:hidden; color:#f5f5f5;
+       background:rgba(16,16,22,0.72); border:1px solid rgba(255,255,255,0.12);
+       backdrop-filter:blur(22px); box-shadow:0 40px 100px rgba(0,0,0,0.6);">
+
+    <!-- title bar -->
+    <div style="display:flex; align-items:center; gap:14px; padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.07);">
+      <div style="display:flex; align-items:center; gap:8px; color:#a0a0a0; font-size:13.5px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93b8ff" stroke-width="1.8" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg>
+        Writing
+      </div>
+      <span style="margin-left:auto; color:#5b5b66; font-size:12.5px;">jasondraper.ai / writing</span>
+    </div>
+
+    <!-- reading view -->
+    <div style="padding:52px 120px; height:calc(100% - 54px); box-sizing:border-box; overflow:hidden;">
+      <span style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#93b8ff; font-weight:600;">Dec 28, 2025</span>
+      <h1 style="font-family:'Newsreader', Georgia, serif; font-weight:500; font-size:46px; line-height:1.08; letter-spacing:-0.02em; margin:16px 0 14px;">
+        Albert Einstein Walks Into a Library</h1>
+      <p style="color:#8a8a94; font-size:15px; margin:0 0 30px;">Jason Draper · 6 min read</p>
+
+      <div style="max-width:60ch; color:#e6e6ea; font-size:18px; line-height:1.72;">
+        <p style="margin:0 0 20px;">This post will spare a long-winded intro about how powerful LLMs are and cut straight to the chase of a core problem — where they struggle with complex audit documents.</p>
+        <h2 style="font-family:'Newsreader',serif; font-weight:500; font-size:27px; letter-spacing:-0.01em; margin:34px 0 12px; color:#fff;">The Library Problem</h2>
+        <p style="margin:0 0 20px;">Suppose you are a library assistant, given the daunting assignment of auditing every book in local libraries for scientific errors. To assist, you think of your new neighbor, Albert Einstein.</p>
+        <blockquote style="margin:0; padding:14px 22px; border-left:3px solid #3b82f6; border-radius:0 12px 12px 0; background:rgba(255,255,255,0.04); font-style:italic; color:#eaeaef;">
+          “I don't want just some mistakes — we need to find ALL of them.”</blockquote>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

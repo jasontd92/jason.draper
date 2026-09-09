@@ -14,89 +14,100 @@
   </style>
 </helmet>
 
-<div style="position: relative; width: 1240px; height: 840px; overflow: hidden;
+<div style="position:relative; width:1240px; height:840px; overflow:hidden;
      background:
-       radial-gradient(60rem 40rem at 78% -8%, rgba(59,130,246,0.20), transparent 60%),
-       radial-gradient(46rem 40rem at 8% 20%, rgba(150,96,60,0.16), transparent 55%),
-       radial-gradient(40rem 40rem at 55% 118%, rgba(59,130,246,0.12), transparent 60%),
-       #0a0a0f;
-     color: #f5f5f5;">
+       radial-gradient(58rem 40rem at 80% -10%, rgba(59,130,246,0.22), transparent 60%),
+       radial-gradient(46rem 40rem at 6% 12%, rgba(150,96,60,0.16), transparent 55%),
+       radial-gradient(44rem 40rem at 50% 120%, rgba(59,130,246,0.12), transparent 60%),
+       #0a0a0f; color:#f5f5f5;">
 
-  <!-- faint spatial grid for depth -->
-  <div style="position:absolute; inset:0;
-       background-image:
-         linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-         linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-       background-size: 46px 46px; mask-image: radial-gradient(120% 90% at 50% 30%, #000 55%, transparent);"></div>
-
-  <!-- floating dock nav -->
-  <div style="position:absolute; top:28px; left:50%; transform:translateX(-50%);
-       display:flex; align-items:center; gap:28px;
-       padding:12px 22px; border-radius:999px;
-       background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10);
-       backdrop-filter:blur(14px); box-shadow:0 12px 40px rgba(0,0,0,0.35);">
+  <!-- menu bar -->
+  <div style="display:flex; align-items:center; justify-content:space-between; padding:22px 40px;">
     <span style="font-weight:600; letter-spacing:-0.01em;">Jason Draper</span>
-    <span style="width:1px;height:16px;background:rgba(255,255,255,0.12);"></span>
-    <a>Writing</a><a>Systems</a><a>About</a>
-  </div>
-
-  <!-- hero panel -->
-  <div style="position:absolute; left:64px; top:150px; width:560px;
-       padding:40px; border-radius:24px;
-       background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09);
-       backdrop-filter:blur(14px); box-shadow:0 20px 60px rgba(0,0,0,0.40);">
-    <div style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#93b8ff; font-weight:600;">Punchcard · YC S23</div>
-    <h1 style="font-size:52px; line-height:1.04; letter-spacing:-0.03em; font-weight:700; margin:18px 0 0;">
-      AI agents that have<br>to be right the<br>first time.</h1>
-    <p style="color:#a0a0a0; font-size:17px; margin:20px 0 0; max-width:42ch;">
-      Missile launch officer, then founder. I build reliability into systems that can't be “mostly right.”</p>
-    <div style="display:flex; gap:12px; margin-top:26px;">
-      <span style="padding:11px 20px; border-radius:999px; background:#3b82f6; color:#fff; font-weight:600; font-size:15px;">Read the writing</span>
-      <span style="padding:11px 20px; border-radius:999px; border:1px solid rgba(255,255,255,0.12); color:#f5f5f5; font-weight:600; font-size:15px;">About →</span>
+    <div style="display:flex; align-items:center; gap:10px; color:#a0a0a0; font-size:13.5px;">
+      <span style="width:8px;height:8px;border-radius:99px;background:#7dd3a8;box-shadow:0 0 10px #7dd3a8;"></span>
+      Building at Punchcard · Utah
     </div>
   </div>
 
-  <!-- widget: featured writing -->
-  <div style="position:absolute; right:64px; top:150px; width:440px;
-       padding:26px; border-radius:22px;
-       background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10);
-       backdrop-filter:blur(14px); box-shadow:0 18px 50px rgba(0,0,0,0.38);">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <span style="font-size:13px; color:#a0a0a0; letter-spacing:0.02em;">Latest</span>
-      <span style="font-size:12px; color:#93b8ff;">Dec 2025</span>
-    </div>
-    <h3 style="font-size:24px; font-weight:600; letter-spacing:-0.01em; margin:12px 0 8px; line-height:1.15;">
-      Albert Einstein Walks Into a Library</h3>
-    <p style="color:#a0a0a0; font-size:14px; margin:0;">Why LLMs miss things in complex documents.</p>
+  <!-- greeting -->
+  <div style="text-align:center; margin-top:26px;">
+    <h1 style="font-size:34px; font-weight:500; letter-spacing:-0.02em; margin:0;">Right the first time.</h1>
+    <p style="color:#8a8a94; font-size:15px; margin:8px 0 0;">Missile launch officer → founder. Building reliable AI agents.</p>
   </div>
 
-  <!-- widget: systems -->
-  <div style="position:absolute; right:64px; top:406px; width:440px;
-       padding:24px; border-radius:22px;
-       background:rgba(255,255,255,0.035); border:1px solid rgba(255,255,255,0.08);
-       backdrop-filter:blur(14px); box-shadow:0 18px 50px rgba(0,0,0,0.35);">
-    <span style="font-size:13px; color:#a0a0a0;">Systems</span>
-    <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:14px;">
-      <div style="padding:16px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07);">
-        <div style="font-weight:600; font-size:17px;">Creed</div>
-        <div style="color:#a0a0a0; font-size:12.5px; margin-top:4px;">Autonomous QA, 24/7</div>
+  <!-- app grid -->
+  <div style="display:flex; justify-content:center; gap:56px; margin-top:44px;">
+    <!-- Writing -->
+    <div style="display:flex; flex-direction:column; align-items:center; gap:12px; width:130px;">
+      <div style="width:112px; height:112px; border-radius:28px;
+           background:linear-gradient(150deg, rgba(59,130,246,0.9), rgba(30,58,138,0.9));
+           border:1px solid rgba(255,255,255,0.18); box-shadow:0 16px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+           display:flex; align-items:center; justify-content:center;">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 5h11M4 10h11M4 15h7"/><path d="M15.5 17.5l4-4 2 2-4 4H15.5v-2z"/>
+        </svg>
       </div>
-      <div style="padding:16px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07);">
-        <div style="font-weight:600; font-size:17px;">CoAudit</div>
-        <div style="color:#a0a0a0; font-size:12.5px; margin-top:4px;">Audit agent in Excel</div>
+      <span style="font-weight:500;">Writing</span>
+      <span style="color:#8a8a94; font-size:12px; text-align:center;">Latest · Dec 2025</span>
+    </div>
+    <!-- Systems -->
+    <div style="display:flex; flex-direction:column; align-items:center; gap:12px; width:130px;">
+      <div style="width:112px; height:112px; border-radius:28px;
+           background:linear-gradient(150deg, rgba(120,90,220,0.85), rgba(40,30,90,0.9));
+           border:1px solid rgba(255,255,255,0.18); box-shadow:0 16px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+           display:flex; align-items:center; justify-content:center;">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="8" width="8" height="8" rx="1.5"/><path d="M10 8V5M14 8V5M10 19v-3M14 19v-3M8 10H5M8 14H5M19 10h-3M19 14h-3"/>
+        </svg>
       </div>
+      <span style="font-weight:500;">Systems</span>
+      <span style="color:#8a8a94; font-size:12px; text-align:center;">Creed · CoAudit</span>
+    </div>
+    <!-- About -->
+    <div style="display:flex; flex-direction:column; align-items:center; gap:12px; width:130px;">
+      <div style="width:112px; height:112px; border-radius:28px;
+           background:linear-gradient(150deg, rgba(200,120,70,0.85), rgba(90,45,25,0.9));
+           border:1px solid rgba(255,255,255,0.18); box-shadow:0 16px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+           display:flex; align-items:center; justify-content:center;">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="9" r="3.2"/><path d="M6 19c0-3 2.7-5 6-5s6 2 6 5"/>
+        </svg>
+      </div>
+      <span style="font-weight:500;">About</span>
+      <span style="color:#8a8a94; font-size:12px; text-align:center;">The arc</span>
     </div>
   </div>
 
-  <!-- widget: now status -->
-  <div style="position:absolute; left:64px; top:590px; width:560px;
-       display:flex; align-items:center; gap:16px;
-       padding:20px 24px; border-radius:20px;
-       background:rgba(255,255,255,0.035); border:1px solid rgba(255,255,255,0.08);
-       backdrop-filter:blur(14px);">
-    <span style="width:9px;height:9px;border-radius:999px;background:#7dd3a8;box-shadow:0 0 12px #7dd3a8;"></span>
-    <span style="color:#f5f5f5; font-size:15px;">Building at Punchcard</span>
-    <span style="color:#6b6b76; font-size:15px; margin-left:auto;">Utah, USA</span>
+  <!-- featured widget: latest writing, glanceable -->
+  <div style="position:absolute; left:50%; transform:translateX(-50%); bottom:150px; width:920px; height:196px;
+       display:flex; border-radius:24px; overflow:hidden;
+       background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.11);
+       backdrop-filter:blur(16px); box-shadow:0 24px 60px rgba(0,0,0,0.42);">
+    <div style="position:relative; width:300px; background:linear-gradient(180deg, rgba(59,130,246,0.16), rgba(10,10,15,0.1));">
+      <svg viewBox="0 0 300 196" width="100%" height="100%" style="opacity:0.55;" fill="none" stroke="#93b8ff" stroke-width="1.4" stroke-opacity="0.7">
+        <rect x="150" y="40" width="52" height="116" rx="3"/><line x1="150" y1="70" x2="202" y2="70"/><line x1="150" y1="100" x2="202" y2="100"/><line x1="150" y1="130" x2="202" y2="130"/>
+        <rect x="212" y="40" width="52" height="116" rx="3"/><line x1="212" y1="70" x2="264" y2="70"/><line x1="212" y1="100" x2="264" y2="100"/><line x1="212" y1="130" x2="264" y2="130"/>
+        <circle cx="80" cy="78" r="16"/><path d="M80 94 L80 138 M80 138 L64 166 M80 138 L96 166 M80 106 L60 128 M80 106 L100 128"/>
+      </svg>
+    </div>
+    <div style="flex:1; padding:30px 34px; display:flex; flex-direction:column; justify-content:center;">
+      <span style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#93b8ff; font-weight:600;">Featured writing</span>
+      <h3 style="font-size:27px; letter-spacing:-0.015em; font-weight:600; margin:10px 0 8px; line-height:1.12;">Albert Einstein Walks Into a Library</h3>
+      <p style="color:#a0a0a0; font-size:14.5px; margin:0;">Why LLMs miss things in complex documents.</p>
+    </div>
+  </div>
+
+  <!-- dock -->
+  <div style="position:absolute; left:50%; transform:translateX(-50%); bottom:34px;
+       display:flex; align-items:center; gap:22px; padding:12px 22px; border-radius:22px;
+       background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+       backdrop-filter:blur(18px); box-shadow:0 14px 40px rgba(0,0,0,0.4);">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"><path d="M4 5h11M4 10h11M4 15h7"/><path d="M15.5 17.5l4-4 2 2-4 4H15.5v-2z"/></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.6"><rect x="8" y="8" width="8" height="8" rx="1.5"/><path d="M10 8V5M14 8V5M10 19v-3M14 19v-3M8 10H5M8 14H5M19 10h-3M19 14h-3" stroke-linecap="round"/></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="9" r="3.2"/><path d="M6 19c0-3 2.7-5 6-5s6 2 6 5"/></svg>
+    <span style="width:1px; height:22px; background:rgba(255,255,255,0.14);"></span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8a8a94" stroke-width="1.7" stroke-linecap="round"><path d="M5 5c8 0 14 6 14 14"/><path d="M5 12c4 0 7 3 7 7"/><circle cx="6" cy="18" r="1.4" fill="#8a8a94" stroke="none"/></svg>
   </div>
 </div>
 </x-dc>
