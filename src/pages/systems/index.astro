@@ -1,0 +1,140 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import GlassCard from '../../components/GlassCard.astro';
+import Reveal from '../../components/Reveal.tsx';
+
+// Show active systems first, then archived; stable by name within each group.
+const order = { active: 0, archived: 1 } as const;
+const systems = (await getCollection('systems')).sort(
+  (a, b) =>
+    order[a.data.status] - order[b.data.status] ||
+    a.data.name.localeCompare(b.data.name),
+);
+---
+
+<Base
+  title="Systems"
+  description="Production AI agent systems built by Jason Draper — Creed (autonomous QA engineering engine) and CoAudit (an audit agent embedded in Excel and Word)."
+>
+  <section class="wrap">
+    <Reveal client:load>
+      <header class="page-head">
+        <h1>Systems</h1>
+        <p>
+          Production AI agent systems I've built and shipped. The recurring
+          theme: the model is the easy part — reliability comes from
+          orchestration.
+        </p>
+      </header>
+    </Reveal>
+
+    {
+      systems.length === 0 ? (
+        <p class="empty">Details coming soon.</p>
+      ) : (
+        <div class="grid">
+          {systems.map((sys, i) => (
+            <Reveal client:visible delay={i * 0.08}>
+              <a class="card-link" href={`/systems/${sys.id}`}>
+                <GlassCard as="article" class="sys-card">
+                  <div class="row">
+                    <h2>{sys.data.name}</h2>
+                    <span class:list={['badge', sys.data.status]}>
+                      {sys.data.status}
+                    </span>
+                  </div>
+                  <p class="tagline">{sys.data.tagline}</p>
+                  <p class="desc">{sys.data.description}</p>
+                  <span class="read">Read →</span>
+                </GlassCard>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .wrap {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: clamp(3rem, 8vw, 5rem) 1.5rem 2rem;
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.75rem;
+  }
+  .page-head p {
+    color: var(--text-muted);
+    max-width: 58ch;
+    font-size: 1.05rem;
+    margin: 0 0 2.5rem;
+  }
+  .empty {
+    color: var(--text-muted);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: 1.25rem;
+  }
+  .card-link {
+    display: block;
+    height: 100%;
+  }
+  .sys-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.5rem;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .sys-card h2 {
+    font-size: 1.35rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .badge {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-glass);
+    color: var(--text-muted);
+  }
+  .badge.active {
+    color: #7dd3a8;
+    border-color: rgba(125, 211, 168, 0.35);
+    background: rgba(125, 211, 168, 0.08);
+  }
+  .tagline {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin: 0;
+  }
+  .desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin: 0;
+    flex: 1;
+  }
+  .read {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+  }
+</style>

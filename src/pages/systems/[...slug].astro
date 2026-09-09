@@ -1,0 +1,117 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const systems = await getCollection('systems');
+  return systems.map((sys) => ({
+    params: { slug: sys.id },
+    props: { sys },
+  }));
+}
+
+const { sys } = Astro.props;
+const { Content } = await render(sys);
+
+const url = new URL(`/systems/${sys.id}`, Astro.site).href;
+
+// SoftwareApplication schema for each system.
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: sys.data.name,
+  applicationCategory: 'BusinessApplication',
+  description: sys.data.description,
+  url,
+  author: { '@type': 'Person', name: 'Jason Draper', url: Astro.site?.href },
+};
+---
+
+<Base
+  title={sys.data.name}
+  description={sys.data.description}
+  ogImage={sys.data.ogImage}
+>
+  <script
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(appSchema)}
+  />
+
+  <article class="sys">
+    <header class="sys-head">
+      <a class="back" href="/systems">← Systems</a>
+      <div class="row">
+        <h1>{sys.data.name}</h1>
+        <span class:list={['badge', sys.data.status]}>{sys.data.status}</span>
+      </div>
+      <p class="tagline">{sys.data.tagline}</p>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="sys-foot">
+      <a class="back" href="/systems">← Back to all systems</a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .sys {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 7vw, 4.5rem) 1.5rem 2rem;
+  }
+  .back {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin: 1rem 0 0.5rem;
+    flex-wrap: wrap;
+  }
+  .sys-head h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    margin: 0;
+  }
+  .badge {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-glass);
+    color: var(--text-muted);
+  }
+  .badge.active {
+    color: #7dd3a8;
+    border-color: rgba(125, 211, 168, 0.35);
+    background: rgba(125, 211, 168, 0.08);
+  }
+  .tagline {
+    color: var(--text-muted);
+    font-size: 1.15rem;
+    margin: 0;
+  }
+  .prose {
+    margin-top: 2.5rem;
+  }
+  .sys-foot {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-glass);
+  }
+</style>

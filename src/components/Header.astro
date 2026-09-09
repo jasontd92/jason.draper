@@ -13,9 +13,15 @@ const isActive = (href: string) =>
       <a href="/writing" class:list={['nav-link', { on: isActive('/writing') }]}>
         Writing
       </a>
+      <a href="/systems" class:list={['nav-link', { on: isActive('/systems') }]}>
+        Systems
+      </a>
+      <a href="/about" class:list={['nav-link', { on: isActive('/about') }]}>
+        About
+      </a>
       <a
         href="https://linkedin.com/in/jasontdraper"
-        class="nav-link"
+        class="nav-link linkedin"
         target="_blank"
         rel="noopener me"
       >
@@ -53,6 +59,17 @@ const isActive = (href: string) =>
     display: flex;
     gap: 1.4rem;
     align-items: center;
+  }
+  @media (max-width: 560px) {
+    .inner {
+      padding: 0.8rem 1.1rem;
+    }
+    nav {
+      gap: 1rem;
+    }
+    .nav-link.linkedin {
+      display: none;
+    }
   }
   .nav-link {
     color: var(--text-muted);

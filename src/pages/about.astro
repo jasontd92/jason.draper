@@ -1,0 +1,244 @@
+---
+import Base from '../layouts/Base.astro';
+import GlassCard from '../components/GlassCard.astro';
+import Reveal from '../components/Reveal.tsx';
+
+const timeline = [
+  {
+    when: 'Now',
+    role: 'Technical Co-Founder',
+    org: 'Punchcard (YC S23)',
+    note: 'AI-powered audit automation. Building production agent systems that hold to an audit-grade bar — repeatable, accurate, and auditable in themselves.',
+  },
+  {
+    when: 'Before',
+    role: 'Co-Founder & CTO',
+    org: 'FairQuote',
+    note: 'Home-service management platform. Built the product and engineering org from the ground up.',
+  },
+  {
+    when: 'Before that',
+    role: 'Missile Launch Officer · Emergency War Order Planner (ICBM)',
+    org: 'U.S. Air Force — 321st Missile Squadron',
+    note: '4+ years active duty. Stood nuclear alert and planned emergency war orders — an environment where "mostly right" is not a passing grade.',
+  },
+];
+
+const systems = [
+  {
+    name: 'Creed',
+    href: '/systems/creed',
+    desc: 'An autonomous QA engineering engine — 24/7, scales horizontally.',
+  },
+  {
+    name: 'CoAudit',
+    href: '/systems/coaudit',
+    desc: 'An audit agent embedded in Excel and Word, with a reasoning trace on every judgment.',
+  },
+];
+---
+
+<Base
+  title="About"
+  description="Jason Draper — Technical Co-Founder at Punchcard (YC S23), former FairQuote CTO, and former U.S. Air Force nuclear missile launch officer. He builds production AI agent systems for regulated, audit-grade work."
+>
+  <section class="wrap">
+    <Reveal client:load>
+      <header class="page-head">
+        <h1>About</h1>
+        <p class="lede">
+          I'm a technical co-founder who builds AI agent systems for work that
+          can't afford to be wrong. My path there was unusual: I spent four-plus
+          years in the U.S. Air Force as an ICBM missile launch officer and
+          emergency war order planner before founding companies. Zero-defect
+          isn't a slogan I picked up in tech — it's where I started.
+        </p>
+      </header>
+    </Reveal>
+
+    <Reveal client:visible>
+      <h2 class="section-title">Background</h2>
+    </Reveal>
+    <ol class="timeline">
+      {
+        timeline.map((t, i) => (
+          <Reveal client:visible delay={i * 0.06}>
+            <li>
+              <GlassCard class="tl-card">
+                <span class="when">{t.when}</span>
+                <h3>{t.role}</h3>
+                <p class="org">{t.org}</p>
+                <p class="note">{t.note}</p>
+              </GlassCard>
+            </li>
+          </Reveal>
+        ))
+      }
+    </ol>
+
+    <Reveal client:visible>
+      <h2 class="section-title">What I build</h2>
+      <p class="body">
+        My throughline is <strong>reliability engineering for LLMs</strong>: the
+        model is rarely the hard part — trustworthy outcomes come from
+        orchestration, grounding, and making an agent's work reviewable. Two
+        systems I've built:
+      </p>
+    </Reveal>
+    <div class="sys-grid">
+      {
+        systems.map((s, i) => (
+          <Reveal client:visible delay={i * 0.08}>
+            <a href={s.href} class="card-link">
+              <GlassCard class="sys-card">
+                <h3>{s.name}</h3>
+                <p>{s.desc}</p>
+                <span class="read">Read →</span>
+              </GlassCard>
+            </a>
+          </Reveal>
+        ))
+      }
+    </div>
+
+    <Reveal client:visible>
+      <h2 class="section-title">Focus &amp; contact</h2>
+      <p class="body">
+        I care about AI agent orchestration, LLM reliability engineering, audit
+        automation, and regulated-industry AI. I'm targeting Product
+        Engineering and Forward Deployed Engineering roles.
+      </p>
+      <GlassCard class="contact">
+        <p>The best way to reach me is LinkedIn.</p>
+        <a
+          class="btn"
+          href="https://linkedin.com/in/jasontdraper"
+          target="_blank"
+          rel="noopener me">Connect on LinkedIn →</a
+        >
+      </GlassCard>
+    </Reveal>
+  </section>
+</Base>
+
+<style>
+  .wrap {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: clamp(3rem, 8vw, 5rem) 1.5rem 2rem;
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+  }
+  .lede {
+    color: var(--text-muted);
+    max-width: 62ch;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin: 3rem 0 1.25rem;
+  }
+  .body {
+    color: var(--text-muted);
+    max-width: 62ch;
+    margin: 0 0 1.25rem;
+  }
+  .body strong {
+    color: var(--text-primary);
+  }
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .tl-card .when {
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tl-card h3 {
+    font-size: 1.15rem;
+    font-weight: 650;
+    margin: 0.4rem 0 0.15rem;
+  }
+  .tl-card .org {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin: 0 0 0.5rem;
+  }
+  .tl-card .note {
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .sys-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    gap: 1rem;
+  }
+  .card-link {
+    display: block;
+    height: 100%;
+  }
+  .sys-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.4rem;
+  }
+  .sys-card h3 {
+    font-size: 1.2rem;
+    font-weight: 650;
+    margin: 0;
+  }
+  .sys-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin: 0;
+    flex: 1;
+  }
+  .read {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+  }
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .contact p {
+    margin: 0;
+    color: var(--text-primary);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.65rem 1.2rem;
+    font-weight: 600;
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 38px rgba(59, 130, 246, 0.45);
+  }
+</style>
