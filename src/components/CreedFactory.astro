@@ -1,0 +1,432 @@
+---
+---
+<style>
+  .creed-factory {
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    --bg: #06090b;
+    --bg-2: #0a0f12;
+    --stroke: rgba(255, 255, 255, 0.13);
+    --stroke-2: rgba(255, 255, 255, 0.07);
+    --ink: #eef4f3;
+    --muted: #93a3a1;
+    --faint: #5a6a67;
+    --teal: #2fd8c6;
+    --blue: #2aa9c9;
+    --gold: #c4a574;
+    --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  .creed-factory { margin: 2.5rem 0; }
+
+  figure {
+    margin: 0;
+    border: 1px solid var(--stroke);
+    border-radius: 16px;
+    background: var(--bg-2);
+    padding: 0.7rem 0.7rem 1.1rem;
+    box-shadow: 0 24px 64px -38px rgba(0, 0, 0, 0.9);
+  }
+  .canvas-frame {
+    position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 11px; overflow: hidden;
+    background: radial-gradient(80% 90% at 82% 50%, rgba(47,216,198,0.06), transparent 70%), #050709;
+  }
+  #factory { width: 100%; height: 100%; display: block; }
+
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; margin-top: 0.85rem; }
+  .bar button.pp {
+    appearance: none; flex: none; width: 2.3rem; height: 2.3rem; border-radius: 999px;
+    border: 1px solid var(--stroke); background: rgba(255,255,255,0.03); color: var(--ink); cursor: pointer;
+    display: grid; place-items: center; transition: border-color .18s, background .18s;
+  }
+  .bar button.pp:hover { border-color: rgba(47,216,198,0.5); background: rgba(47,216,198,0.06); }
+  .bar button.pp svg { width: 14px; height: 14px; fill: currentColor; }
+  button:focus-visible, .scope button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+  .modebar { display: flex; justify-content: flex-end; margin-bottom: 0.6rem; }
+  .seg { display: inline-flex; border: 1px solid var(--stroke); border-radius: 999px; overflow: hidden; }
+  .seg button { appearance: none; border: 0; background: transparent; color: var(--muted); font-family: var(--sans); font-size: 0.78rem; font-weight: 500; padding: 0.4rem 0.9rem; cursor: pointer; transition: color .16s, background .16s; }
+  .seg button:hover { color: var(--ink); }
+  .seg button[data-mode="creed"].on { color: #04110f; background: var(--teal); }
+  .seg button[data-mode="slop"].on { color: #1a0806; background: #e0645a; }
+  .scope { display: inline-flex; border: 1px solid var(--stroke); border-radius: 999px; overflow: hidden; }
+  .scope button {
+    appearance: none; border: 0; background: transparent; color: var(--muted); font-family: var(--sans);
+    font-size: 0.76rem; font-weight: 500; padding: 0.34rem 0.7rem; cursor: pointer; transition: color .16s, background .16s;
+  }
+  .scope button.on { color: var(--bg); background: var(--teal); }
+  .stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.55rem; margin-top: 1rem; border-top: 1px solid var(--stroke-2); padding-top: 0.9rem; }
+  .stat { display: flex; flex-direction: column; border: 1px solid var(--stroke-2); border-radius: 10px; padding: 0.65rem 0.7rem; background: rgba(255,255,255,0.015); }
+  .stat .k { font-family: var(--mono); font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); line-height: 1.3; }
+  .stat .v { font-size: 1.42rem; font-weight: 700; letter-spacing: -0.02em; margin-top: auto; padding-top: 0.4rem; font-variant-numeric: tabular-nums; }
+  .stat.hero .v { color: var(--ink); }
+  .stat.prod .v { color: var(--teal); }
+  .stat.human .v { color: var(--gold); }
+  @media (max-width: 620px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat.hero { grid-column: span 2; }
+  }
+</style>
+
+<div class="creed-factory">
+  <figure>
+    <div class="modebar">
+      <div class="seg" role="group" aria-label="Mode">
+        <button data-mode="creed" class="on">Creed</button>
+        <button data-mode="slop">AI slop cannon</button>
+      </div>
+    </div>
+    <div class="canvas-frame">
+      <canvas id="factory" role="img" aria-label="Creed's QA factory drawn as a funnel. A dense stream of missions is walked against the product around the clock — roughly 2,000 a week. Almost all find nothing; only a bug confirmed by being seen twice (about 4.6 a day) becomes an issue in persistent memory. Every resulting fix ships to production — about 5 a day, 59% merged automatically. Around 2 a day detour through a human gate on protected paths such as auth, migrations, infrastructure and database mutations, then continue to production. Production also feeds bugs back in: real errors and session friction (Watchdog and UX Health) arrive already confirmed, entering directly at the confirmed-bug stage without needing a walk. About a quarter of fixes are sent back at the approve step — proof-of-work, lint, and review catching mistakes — before they pass. The human-in-the-loop also merges its own work — roughly 20 changes a day — straight to production. Reverts are rare: 3 in 7 months. Nightly, a self-healing pass repairs the pipeline itself — never the product — and a separate report goes to a human. A toggle switches to an ungated 'AI slop cannon', where every perceived bug lands on a human who cannot merge them all."></canvas>
+    </div>
+
+    <div class="bar">
+      <button id="playpause" class="pp" aria-label="Play or pause"><svg id="pp-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg></button>
+      <div class="scope" role="group" aria-label="Time scope">
+        <button data-scope="day" class="on">Day</button>
+        <button data-scope="week">Week</button>
+        <button data-scope="seven">7 months</button>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat hero"><div class="k">Missions</div><div class="v" id="s-walks">0</div></div>
+      <div class="stat"><div class="k">Issues</div><div class="v" id="s-issues">0</div></div>
+      <div class="stat prod"><div class="k">Fixes</div><div class="v" id="s-fixes">0</div></div>
+      <div class="stat human"><div class="k">Human-in-<br>the-loop</div><div class="v" id="s-human">0</div></div>
+      <div class="stat"><div class="k">Reverts</div><div class="v" id="s-revert">0</div></div>
+    </div>
+  </figure>
+</div>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const cv = document.getElementById("factory");
+  const ctx = cv.getContext("2d");
+  const pp = document.getElementById("playpause");
+  const ppIcon = document.getElementById("pp-icon");
+  const scopeBtns = Array.from(document.querySelectorAll(".scope button"));
+  const out = {
+    walks: document.getElementById("s-walks"), issues: document.getElementById("s-issues"),
+    fixes: document.getElementById("s-fixes"), human: document.getElementById("s-human"),
+    revert: document.getElementById("s-revert")
+  };
+
+  const C = { teal: "#2fd8c6", blue: "#2aa9c9", gold: "#c4a574", ink: "#eef4f3", muted: "#93a3a1", faint: "#4a5754" };
+  const P_ISSUE = 4.6 / 286;   // walks that survive to become an issue
+  const P_HUMAN = 0.41;        // fixes that route through a human before production
+
+  const SCOPE = {
+    day:   { walks: 286,   issues: 4.6, fixes: 4.6, human: 1.9, revert: 0.014 },
+    week:  { walks: 2000,  issues: 32,  fixes: 32,  human: 13,  revert: 0.1 },
+    seven: { walks: 60800, issues: 980, fixes: 980, human: 402, revert: 3 }
+  };
+  let scope = "day";
+
+  let W = 0, H = 0, dpr = 1, L = {};
+  let motes = [], pulses = [];
+  let playing = !reduce;
+  let slop = false;
+  let walkAcc = 0, wardenAcc = 4, prodAcc = 2, humanOwnAcc = 0, last = performance.now();
+
+  function layout() {
+    L.inX = W * 0.045; L.memX = W * 0.28; L.seenX = W * 0.44; L.mergeX = W * 0.585;
+    L.humanX = W * 0.73; L.humanY = H * 0.26;
+    L.prodX = W * 0.91; L.prodY = H * 0.56;
+    L.midY = H * 0.5; L.band = H * 0.42;
+    L.memBottom = L.midY + L.band / 2;
+    L.healthY = L.memBottom + H * 0.09;                          // "daily health" title (dropped for spacing)
+    L.wardenX = L.memX - W * 0.06; L.wardenY = L.memBottom + H * 0.17;   // self-healing (left)
+    L.reportX = L.memX + W * 0.06; L.reportY = L.wardenY;                // fleet report (right, same row)
+  }
+  function resize() {
+    const r = cv.getBoundingClientRect(); if (!r.width) return;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    layout();
+    if (!playing) staticFrame();
+  }
+
+  const SPEED = () => W * 0.38;
+  function spawnWalk() {
+    const y = L.midY + (Math.random() - 0.5) * L.band;
+    motes.push({ x: L.inX, y, kind: "walk", phase: "walk", willIssue: Math.random() < (slop ? 0.32 : P_ISSUE), sp: 0.85 + Math.random() * 0.4, life: 1,
+      wp: [{ x: L.memX, y }], wi: 0 });
+  }
+  function spawnProdBug() {                       // production feeds an already-confirmed bug back in
+    const topY = H * 0.08;
+    motes.push({ x: L.prodX, y: L.prodY, kind: "prodbug", phase: "return", sp: 0.95, life: 1,
+      wp: [{ x: L.prodX, y: topY }, { x: L.seenX, y: topY }, { x: L.seenX, y: L.midY }], wi: 0 });
+  }
+  function pulse(x, y, col, r0) { pulses.push({ x, y, r: r0 || 1.5, life: 1, col }); }
+
+  function arrive(m) {
+    if (m.phase === "walk") {
+      pulse(L.memX, m.y, C.teal, 1.4);
+      if (!m.willIssue) { m.fading = true; return; }
+      m.kind = "issue";
+      if (slop) { m.kind = "human"; m.phase = "pile"; m.wp = [{ x: L.seenX, y: m.y }, { x: L.humanX + (Math.random() - 0.5) * W * 0.06, y: L.humanY + (Math.random() - 0.5) * H * 0.12 }]; m.wi = 0; }   // no gate — it all lands on a human
+      else { m.phase = "issue"; m.wp = [{ x: L.seenX, y: m.y }, { x: L.mergeX, y: L.midY + (Math.random() - 0.5) * H * 0.05 }]; m.wi = 0; }
+    } else if (m.phase === "issue") {
+      pulse(L.mergeX, m.y, C.teal, 2.2);
+      if (slop) { m.kind = "human"; m.phase = "pile"; m.wp = [{ x: L.humanX + (Math.random() - 0.5) * W * 0.06, y: L.humanY + (Math.random() - 0.5) * H * 0.12 }]; m.wi = 0; return; }
+      if (!m.reworked && Math.random() < 0.28) {   // PoW / lint / review catches a mistake → send back
+        m.reworked = true; m.kind = "rework"; m.phase = "rework";
+        const ry = L.midY + L.band * 0.34;
+        m.wp = [{ x: L.mergeX, y: ry }, { x: L.seenX, y: ry }, { x: L.seenX, y: L.midY }]; m.wi = 0;
+      } else if (Math.random() < P_HUMAN) { m.kind = "human"; m.phase = "human"; m.wp = [{ x: L.humanX, y: L.humanY }, { x: L.prodX, y: L.prodY }]; m.wi = 0; }
+      else { m.phase = "prod"; m.wp = [{ x: L.prodX, y: L.prodY }]; m.wi = 0; }
+    } else { // prod or human -> reached production
+      pulse(L.prodX, L.prodY, m.kind === "human" ? C.gold : C.teal, 4);
+      prodFlash = 1;
+      m.fading = true;
+    }
+  }
+  let prodFlash = 0;
+
+  function step(dt) {
+    walkAcc += dt;
+    const every = slop ? 0.03 : 0.085;       // dense inbound stream (flood in slop mode)
+    while (walkAcc > every) { walkAcc -= every; spawnWalk(); }
+
+    if (!slop) {                               // nightly maintenance beat (no daily health in slop)
+      wardenAcc += dt;
+      if (wardenAcc > 11) {
+        wardenAcc = 0;
+        pulse(L.wardenX, L.wardenY, C.blue, 4);
+        motes.push({ x: L.wardenX, y: L.wardenY, kind: "warden", phase: "sweep", sp: 0.9, life: 1, wp: [{ x: L.memX, y: L.memBottom - 6 }], wi: 0 });
+        pulse(L.reportX, L.reportY, C.blue, 4);
+        motes.push({ x: L.reportX, y: L.reportY, kind: "report", phase: "report", sp: 0.85, life: 1, wp: [{ x: L.humanX, y: L.humanY }], wi: 0 });
+      }
+    }
+
+    prodAcc += dt;
+    if (prodAcc > 6.5) { prodAcc = 0; spawnProdBug(); }   // production feeds bugs back in
+
+    if (!slop) {                                          // humans also merge their own work (~20/day)
+      humanOwnAcc += dt;
+      if (humanOwnAcc > 1.2) { humanOwnAcc = 0; motes.push({ x: L.humanX, y: L.humanY, kind: "human", phase: "prod", sp: 0.8, life: 1, wp: [{ x: L.prodX, y: L.prodY }], wi: 0 }); }
+    }
+
+    for (const m of motes) {
+      if (m.fading) { m.life -= dt * (m.fadeRate || 3); continue; }
+      const tgt = m.wp[m.wi];
+      const dx = tgt.x - m.x, dy = tgt.y - m.y, d = Math.hypot(dx, dy);
+      const stepLen = m.sp * SPEED() * dt;
+      if (d <= stepLen) {
+        m.x = tgt.x; m.y = tgt.y; m.wi++;
+        if (m.phase === "human" && m.wi === 1) pulse(L.humanX, L.humanY, C.gold, 2.5);
+        if (m.wi >= m.wp.length) {
+          if (m.phase === "sweep") { pulse(L.memX, L.memBottom - 6, C.blue, 2.5); m.fading = true; }
+          else if (m.phase === "report") { pulse(L.humanX, L.humanY, C.gold, 3); m.fading = true; }
+          else if (m.phase === "return") { pulse(L.seenX, L.midY, C.blue, 2.5); m.kind = "issue"; m.phase = "issue"; m.wp = [{ x: L.mergeX, y: L.midY }]; m.wi = 0; }
+          else if (m.phase === "rework") { pulse(L.seenX, L.midY, "#d08a4a", 2); m.kind = "issue"; m.phase = "issue"; m.wp = [{ x: L.mergeX, y: L.midY }]; m.wi = 0; }
+          else if (m.phase === "pile") { pulse(L.humanX, L.humanY, "#e0645a", 2); if (Math.random() < 0.15) { m.phase = "prod"; m.wp = [{ x: L.prodX, y: L.prodY }]; m.wi = 0; } else { m.fading = true; m.fadeRate = 0.55; } }
+          else arrive(m);
+        }
+      } else { m.x += dx / d * stepLen; m.y += dy / d * stepLen; }
+    }
+    motes = motes.filter((m) => m.life > 0);
+    for (const p of pulses) { p.r += dt * 40; p.life -= dt * 1.8; }
+    pulses = pulses.filter((p) => p.life > 0);
+    if (prodFlash > 0) prodFlash = Math.max(0, prodFlash - dt * 2.2);
+  }
+
+  function lab(x, y, txt, col, align, size, weight) {
+    ctx.fillStyle = col; ctx.textAlign = align || "left"; ctx.textBaseline = "alphabetic";
+    ctx.font = (weight || "") + (size || 11) + "px " + (weight ? "Inter, system-ui, sans-serif" : "ui-monospace, monospace");
+    ctx.fillText(txt, x, y);
+  }
+  function alpha(hex, a) { const n = parseInt(hex.slice(1), 16); return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")"; }
+  function ribbon(x0, y0, t0, x1, y1, t1, fill) {   // smooth Sankey band, thickness t0→t1
+    const cx = (x0 + x1) / 2;
+    ctx.beginPath();
+    ctx.moveTo(x0, y0 - t0 / 2);
+    ctx.bezierCurveTo(cx, y0 - t0 / 2, cx, y1 - t1 / 2, x1, y1 - t1 / 2);
+    ctx.lineTo(x1, y1 + t1 / 2);
+    ctx.bezierCurveTo(cx, y1 + t1 / 2, cx, y0 + t0 / 2, x0, y0 + t0 / 2);
+    ctx.closePath();
+    ctx.fillStyle = fill; ctx.fill();
+  }
+
+  function draw() {
+    if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+
+    // ---- pipeline ribbons: width = volume ----
+    const survivorH = Math.max(15, H * 0.05);
+    const humanLaneT = survivorH * 0.41, autoLaneT = survivorH * 0.59;
+    const humanTopCy = L.midY - survivorH / 2 + humanLaneT / 2;
+    const autoBotCy = L.midY + survivorH / 2 - autoLaneT / 2;
+    const humanOutT = autoLaneT * 2.6;              // human also ships ~20/day of its own
+
+    ribbon(L.inX, L.midY, L.band, L.seenX, L.midY, survivorH, "rgba(47,216,198,0.05)");   // intake flood → collapse
+    if (slop) {
+      // no gate — it all lands on a human who can't merge it; only a trickle reaches production
+      ribbon(L.seenX, L.midY, survivorH * 3.4, L.humanX, L.humanY, survivorH * 3.4, "rgba(224,100,90,0.10)");
+      ribbon(L.humanX, L.humanY, autoLaneT * 0.7, L.prodX, L.prodY, autoLaneT * 0.7, "rgba(224,100,90,0.09)");
+    } else {
+      ribbon(L.seenX, L.midY, survivorH, L.mergeX, L.midY, survivorH, "rgba(47,216,198,0.06)");
+      ribbon(L.mergeX, humanTopCy, humanLaneT, L.humanX, L.humanY, humanLaneT, "rgba(196,165,116,0.12)");  // top lane → human
+      ribbon(L.mergeX, autoBotCy, autoLaneT, L.prodX, L.prodY, autoLaneT, "rgba(47,216,198,0.11)");        // bottom lane → production
+      ribbon(L.humanX, L.humanY, humanOutT, L.prodX, L.prodY, humanOutT, "rgba(196,165,116,0.13)");        // human-in-the-loop → production
+      // production feeds already-confirmed bugs back into the perceived-bug stage
+      ctx.strokeStyle = "rgba(42,169,201,0.13)"; ctx.lineWidth = 2.5; ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.beginPath(); ctx.moveTo(L.prodX, L.prodY); ctx.lineTo(L.prodX, H * 0.08); ctx.lineTo(L.seenX, H * 0.08); ctx.lineTo(L.seenX, L.midY); ctx.stroke();
+      // rework loop: approve-fix sends a share back for another pass (PoW · lint · review)
+      const ry = L.midY + L.band * 0.34;
+      ctx.strokeStyle = "rgba(208,138,74,0.22)"; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(L.mergeX, L.midY); ctx.lineTo(L.mergeX, ry); ctx.lineTo(L.seenX, ry); ctx.lineTo(L.seenX, L.midY); ctx.stroke();
+      ctx.lineWidth = 1; ctx.lineCap = "butt"; ctx.lineJoin = "miter";
+    }
+
+    // pass-through points: perceived bug (+ approve, when gated)
+    ctx.setLineDash([2, 5]); ctx.strokeStyle = "rgba(255,255,255,0.22)"; ctx.lineWidth = 1;
+    (slop ? [L.seenX] : [L.seenX, L.mergeX]).forEach((x) => { ctx.beginPath(); ctx.moveTo(x, L.midY - L.band * 0.34); ctx.lineTo(x, L.midY + L.band * 0.34); ctx.stroke(); });
+    ctx.setLineDash([]);
+
+    // persistent memory membrane
+    ctx.strokeStyle = "rgba(47,216,198,0.4)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(L.memX, L.midY - L.band / 2); ctx.lineTo(L.memX, L.midY + L.band / 2); ctx.stroke();
+
+    // daily-health group (dropped entirely in slop mode)
+    if (!slop) {
+      const dhX = L.memX - W * 0.135, dhY = L.healthY - 15, dhW = W * 0.27, dhH = (L.wardenY + 22) - dhY;
+      ctx.save();
+      ctx.setLineDash([2, 4]); ctx.strokeStyle = "rgba(42,169,201,0.35)"; ctx.lineWidth = 1;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(dhX, dhY, dhW, dhH, 8); else ctx.rect(dhX, dhY, dhW, dhH);
+      ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = "rgba(8,12,14,0.95)"; ctx.strokeStyle = C.blue; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(L.wardenX, L.wardenY, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(L.reportX, L.reportY, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    }
+
+    // human node (both modes — in slop it's the overwhelmed bottleneck)
+    ctx.fillStyle = "rgba(8,12,14,0.95)"; ctx.strokeStyle = slop ? "#e0645a" : C.gold; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(L.humanX, L.humanY, slop ? 8 : 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+    const pr = 15 + prodFlash * 5;
+    ctx.save();
+    ctx.shadowBlur = 14 + prodFlash * 16; ctx.shadowColor = C.teal;
+    ctx.fillStyle = "rgba(47,216,198," + (0.08 + prodFlash * 0.12) + ")";
+    ctx.strokeStyle = C.teal; ctx.lineWidth = 1.8;
+    ctx.beginPath(); ctx.arc(L.prodX, L.prodY, pr, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.restore();
+
+    // pulses
+    for (const p of pulses) {
+      ctx.strokeStyle = alpha(p.col, Math.max(0, p.life) * 0.7); ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    // motes
+    for (const m of motes) {
+      let col = C.teal, r = 1.2, glow = 0, a = 0.32;
+      if (m.kind === "issue") { col = C.teal; r = 2.5; glow = 6; a = 1; }
+      else if (m.kind === "rework") { col = "#d08a4a"; r = 2.1; glow = 4; a = 0.95; }
+      else if (m.kind === "human") { col = C.gold; r = 2.7; glow = 7; a = 1; }
+      else if (m.kind === "warden") { col = C.blue; r = 2.2; glow = 4; a = 0.9; }
+      else if (m.kind === "prodbug") { col = C.blue; r = 2.2; glow = 5; a = 0.95; }
+      else if (m.kind === "report") { col = C.gold; r = 2.4; glow = 6; a = 1; }
+      else if (m.phase === "prod") { col = C.teal; r = 2.6; glow = 6; a = 1; }
+      if (slop && m.kind !== "walk" && m.kind !== "warden" && m.kind !== "report" && m.kind !== "prodbug") { col = "#e0645a"; glow = 6; }
+      ctx.save();
+      if (glow) { ctx.shadowBlur = glow; ctx.shadowColor = col; }
+      ctx.globalAlpha = m.fading ? Math.max(0, m.life) * a : a;
+      ctx.fillStyle = col;
+      ctx.beginPath(); ctx.arc(m.x, m.y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    // labels (bare nouns — motion and width carry the rest)
+    lab(L.inX - 2, L.midY - L.band / 2 - 8, "missions", C.muted, "left", 11.5, "500 ");
+    lab(L.memX, H * 0.075, "persistent memory", C.muted, "center", 11.5, "500 ");
+    lab(L.seenX, L.midY - L.band * 0.4, slop ? "perceived bug" : "confirmed bug", C.muted, "center", 10);
+    lab(L.humanX, L.humanY - 14, "human", slop ? "#e0645a" : C.gold, "center", 11, "500 ");
+    lab(L.prodX, L.prodY - pr - 8, "production", C.ink, "center", 12.5, "600 ");
+    if (!slop) {
+      lab(L.mergeX, L.midY - L.band * 0.4, "approve fix", C.muted, "center", 10);
+      lab((L.seenX + L.mergeX) / 2, L.midY + L.band * 0.34 + 13, "rework", "#d08a4a", "center", 9.5);
+      lab(L.memX, L.healthY, "daily health", C.blue, "center", 10.5, "600 ");
+      lab(L.wardenX, L.wardenY + 16, "self-healing", C.muted, "center", 10);
+      lab(L.reportX, L.reportY + 16, "fleet report", C.muted, "center", 10);
+    }
+  }
+
+  function fmt(n) { if (n >= 1000) return Math.round(n).toLocaleString(); if (n >= 10) return String(Math.round(n)); return (Math.round(n * 10) / 10).toString(); }
+  function renderStats() {
+    const s = SCOPE[scope];
+    if (slop) {                                   // the cannon: everything lands on a human who can't keep up
+      const perceived = Math.round(s.walks * 0.32);
+      const fixes = Math.round(perceived * 0.15);
+      out.walks.textContent = s.walks.toLocaleString();
+      out.issues.textContent = perceived.toLocaleString();
+      out.fixes.textContent = fixes.toLocaleString();
+      out.human.textContent = perceived.toLocaleString();
+      out.revert.textContent = Math.round(fixes * 0.34).toLocaleString();
+      out.human.style.color = "#e0645a"; out.fixes.style.color = "#e0645a"; out.revert.style.color = "#e0645a";
+      return;
+    }
+    out.human.style.color = ""; out.fixes.style.color = ""; out.revert.style.color = "";
+    out.walks.textContent = s.walks.toLocaleString();
+    out.issues.textContent = fmt(s.issues);
+    out.fixes.textContent = fmt(s.fixes);
+    out.human.textContent = fmt(s.human);
+    out.revert.textContent = s.revert < 0.5 && scope === "day" ? "~0" : fmt(s.revert);
+  }
+
+  function staticFrame() {
+    motes = []; pulses = [];
+    for (let i = 0; i < 30; i++) {
+      const y = L.midY + (Math.random() - 0.5) * L.band;
+      motes.push({ x: L.inX + Math.random() * (L.memX - L.inX), y, kind: "walk", phase: "walk", willIssue: false, sp: 0, life: 1, wp: [{ x: L.memX, y }], wi: 0 });
+    }
+    motes.push({ x: (L.seenX + L.mergeX) / 2, y: L.midY, kind: "issue", phase: "issue", sp: 0, life: 1, wp: [{ x: L.mergeX, y: L.midY }], wi: 0 });
+    motes.push({ x: (L.mergeX + L.prodX) / 2, y: L.midY, kind: "issue", phase: "prod", sp: 0, life: 1, wp: [{ x: L.prodX, y: L.prodY }], wi: 0 });
+    motes.push({ x: (L.humanX + L.prodX) / 2, y: (L.humanY + L.prodY) / 2, kind: "human", phase: "human", sp: 0, life: 1, wi: 1, wp: [{ x: L.humanX, y: L.humanY }, { x: L.prodX, y: L.prodY }] });
+    motes.push({ x: L.humanX + (L.prodX - L.humanX) * 0.4, y: L.humanY + (L.prodY - L.humanY) * 0.4, kind: "human", phase: "prod", sp: 0, life: 1, wp: [{ x: L.prodX, y: L.prodY }], wi: 0 });
+    motes.push({ x: (L.seenX + L.prodX) / 2, y: H * 0.08, kind: "prodbug", phase: "return", sp: 0, life: 1, wi: 1, wp: [{ x: L.prodX, y: H * 0.08 }, { x: L.seenX, y: H * 0.08 }, { x: L.seenX, y: L.midY }] });
+    draw(); renderStats();
+  }
+
+  const PLAY = '<path d="M4 3l9 5-9 5z"/>', PAUSE = '<path d="M4 3h3v10H4zM9 3h3v10H9z"/>';
+  function setPP() { ppIcon.innerHTML = playing ? PAUSE : PLAY; }
+  pp.addEventListener("click", () => {
+    if (reduce) return;
+    playing = !playing; setPP();
+    if (playing) { last = performance.now(); requestAnimationFrame(frame); } else staticFrame();
+  });
+  scopeBtns.forEach((b) => b.addEventListener("click", () => {
+    scope = b.dataset.scope; scopeBtns.forEach((x) => x.classList.toggle("on", x === b)); renderStats();
+  }));
+  const modeBtns = Array.from(document.querySelectorAll(".seg button"));
+  modeBtns.forEach((b) => b.addEventListener("click", () => {
+    const next = b.dataset.mode === "slop";
+    if (next === slop) return;
+    slop = next;
+    modeBtns.forEach((x) => x.classList.toggle("on", x === b));
+    motes = []; pulses = []; walkAcc = 0; wardenAcc = 4; prodAcc = 2; humanOwnAcc = 0;
+    renderStats();
+    if (!reduce && !playing) { playing = true; setPP(); last = performance.now(); requestAnimationFrame(frame); }
+    if (!playing) staticFrame();
+  }));
+
+  function frame(now) {
+    if (!playing) return;
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    step(dt); draw();
+    requestAnimationFrame(frame);
+  }
+
+  if ("ResizeObserver" in window) new ResizeObserver(resize).observe(cv);
+  window.addEventListener("resize", resize);
+  resize(); setPP(); renderStats();
+  if (playing) requestAnimationFrame(frame); else staticFrame();
+</script>

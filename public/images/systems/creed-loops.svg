@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 168" role="img" aria-labelledby="cl-title cl-desc" font-family="Inter, system-ui, sans-serif">
+  <title id="cl-title">Three loops</title>
+  <desc id="cl-desc">Map, Verify, and Fix share memory.</desc>
+  <rect x="16" y="16" width="184" height="88" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)"/>
+  <text x="108" y="54" fill="#2fd8c6" font-size="15" font-weight="600" text-anchor="middle">Map</text>
+  <text x="108" y="78" fill="#93a3a1" font-size="13" text-anchor="middle">what is true</text>
+  <rect x="228" y="16" width="184" height="88" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)"/>
+  <text x="320" y="54" fill="#2fd8c6" font-size="15" font-weight="600" text-anchor="middle">Verify</text>
+  <text x="320" y="78" fill="#93a3a1" font-size="13" text-anchor="middle">does it still hold</text>
+  <rect x="440" y="16" width="184" height="88" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)"/>
+  <text x="532" y="54" fill="#2fd8c6" font-size="15" font-weight="600" text-anchor="middle">Fix</text>
+  <text x="532" y="78" fill="#93a3a1" font-size="13" text-anchor="middle">change the product</text>
+  <line x1="108" y1="104" x2="108" y2="124" stroke="#2aa9c9" stroke-width="1.25"/>
+  <line x1="320" y1="104" x2="320" y2="124" stroke="#2aa9c9" stroke-width="1.25"/>
+  <line x1="532" y1="104" x2="532" y2="124" stroke="#2aa9c9" stroke-width="1.25"/>
+  <rect x="16" y="124" width="608" height="28" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)"/>
+  <text x="320" y="143" fill="#93a3a1" font-size="12" text-anchor="middle">shared memory</text>
+</svg>
