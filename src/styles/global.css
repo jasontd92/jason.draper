@@ -44,8 +44,7 @@ body {
   flex-direction: column;
   margin: 0;
   background-color: var(--bg-base);
-  /* Ambient dithering shader (Paper Shaders) is layered behind via .bg-shader;
-     .bg-scrim sits above it for text contrast. */
+  /* Ambient dithering + scrim live in #jd-ambient (transition:persist). */
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -60,9 +59,11 @@ a {
 }
 
 /* Sticky footer: main grows so the footer sits at the bottom on short pages
-   (fixed .bg-* layers are out of flow and unaffected). */
+   (fixed ambient layers are out of flow and unaffected). */
 main {
   flex: 1 0 auto;
+  position: relative;
+  z-index: 1;
 }
 /* Home only: let the launcher fill main so its icons can centre vertically. */
 main:has(.launcher) {
@@ -70,13 +71,19 @@ main:has(.launcher) {
   flex-direction: column;
 }
 
-/* Ambient shader wallpaper + readability scrim (both fixed, behind content) */
+/* Persisted ambient stack — keep out of view-transition capture so the live
+   canvas isn't re-rasterized (looks zoomed / blocky after soft nav). */
+.bg-ambient {
+  /* Wrapper exists for transition:persist; children are the fixed layers. */
+  view-transition-name: none;
+}
 .bg-shader {
   position: fixed;
   inset: 0;
   z-index: -2;
   pointer-events: none;
   opacity: 0.62;
+  view-transition-name: none;
 }
 .bg-scrim {
   position: fixed;
@@ -87,6 +94,7 @@ main:has(.launcher) {
   background:
     radial-gradient(120% 90% at 50% 32%, rgba(6, 9, 11, 0.25) 0%, rgba(6, 9, 11, 0.72) 62%, rgba(6, 9, 11, 0.9) 100%),
     linear-gradient(180deg, rgba(6, 9, 11, 0.35), rgba(6, 9, 11, 0.6));
+  view-transition-name: none;
 }
 @media (max-width: 720px) {
   /* stronger scrim on narrow screens where text sits over more of the canvas */
@@ -94,6 +102,26 @@ main:has(.launcher) {
     background:
       radial-gradient(140% 90% at 50% 30%, rgba(6, 9, 11, 0.4) 0%, rgba(6, 9, 11, 0.82) 60%, rgba(6, 9, 11, 0.94) 100%);
   }
+}
+
+/*
+ * Paper Shaders injects equivalent rules into <head> on first mount, but Astro
+ * ClientRouter head-swaps wipe that tag — canvas then sizes to its buffer
+ * attributes (e.g. 2560px) and the dither looks 2× coarser after every nav.
+ * Keep the layout rules in our stylesheet so they survive soft navigations.
+ */
+[data-paper-shader] {
+  isolation: isolate;
+  position: relative;
+}
+[data-paper-shader] canvas {
+  contain: strict;
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
 }
 
 ::selection {

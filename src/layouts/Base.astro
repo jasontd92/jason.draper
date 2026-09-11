@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -61,7 +62,10 @@ const personSchema = {
 ---
 
 <!doctype html>
-<html lang="en">
+<!-- Root VT animation off: default cross-fade freezes a canvas snapshot and
+     reads as flicker/offset even when the live shader is persisted. Content
+     can still fade via transition:animate on <main>. -->
+<html lang="en" transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -118,6 +122,11 @@ const personSchema = {
     <!-- Extra structured data (e.g. Article schema) injected per page -->
     <slot name="head" />
 
+    <!-- Soft navigations keep the WebGL shader mounted; hard loads / no-JS
+         still get a full HTML document per URL (agent + crawler friendly).
+         fallback=none: no animate/swap fallback that can flash the page. -->
+    <ClientRouter fallback="none" />
+
     <!-- No-JS safety: if Framer Motion never hydrates, keep reveal content
          fully visible instead of stuck at its hidden initial state. -->
     <noscript>
@@ -130,10 +139,22 @@ const personSchema = {
     </noscript>
   </head>
   <body>
-    <div class="bg-shader" aria-hidden="true">
-      <ShaderBackground client:only="react" shape="warp" mask={bg === 'frame' ? 'frame' : 'none'} />
+    <!-- Persisted across ClientRouter swaps so the WebGL canvas is never
+         moved/destroyed. Island below only pushes prop updates into #jd-ambient-slot. -->
+    <div
+      id="jd-ambient"
+      class="bg-ambient"
+      aria-hidden="true"
+      transition:persist="jd-ambient"
+    >
+      <div id="jd-ambient-slot" class="bg-shader"></div>
+      <div class="bg-scrim"></div>
     </div>
-    <div class="bg-scrim" aria-hidden="true"></div>
+    <ShaderBackground
+      client:only="react"
+      shape="warp"
+      mask={bg === 'frame' ? 'frame' : 'none'}
+    />
     <Header />
     <main>
       <slot />
