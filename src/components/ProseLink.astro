@@ -1,0 +1,27 @@
+---
+interface Props {
+  href?: string;
+  [key: string]: unknown;
+}
+
+const { href, ...rest } = Astro.props;
+const external =
+  typeof href === 'string' && /^https?:\/\//i.test(href);
+
+let sameSite = false;
+if (external) {
+  try {
+    sameSite = new URL(href).hostname === 'jasondraper.ai';
+  } catch {
+    sameSite = false;
+  }
+}
+
+const openNew = external && !sameSite;
+---
+
+<a
+  href={href}
+  {...rest}
+  target={openNew ? '_blank' : undefined}
+  rel={openNew ? 'noopener noreferrer' : undefined}><slot /></a>

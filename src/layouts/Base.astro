@@ -160,5 +160,24 @@ const personSchema = {
       <slot />
     </main>
     <Footer />
+    <script>
+      function markExternalLinks() {
+        for (const a of document.querySelectorAll('a[href^="http"]')) {
+          let host = '';
+          try {
+            host = new URL(a.href).hostname;
+          } catch {
+            continue;
+          }
+          if (host === location.hostname || host === 'jasondraper.ai') continue;
+          a.target = '_blank';
+          const rel = new Set((a.rel || '').split(/\s+/).filter(Boolean));
+          rel.add('noopener');
+          rel.add('noreferrer');
+          a.rel = [...rel].join(' ');
+        }
+      }
+      document.addEventListener('astro:page-load', markExternalLinks);
+    </script>
   </body>
 </html>
