@@ -68,6 +68,8 @@
   @media (max-width: 620px) {
     .stat-grid { grid-template-columns: repeat(2, 1fr); }
     .stat.hero { grid-column: span 2; }
+    /* Give the diagram more vertical room so the stacked mobile labels breathe. */
+    .canvas-frame { aspect-ratio: 4 / 3.6; }
   }
 </style>
 
@@ -127,7 +129,7 @@
   };
   let scope = "day";
 
-  let W = 0, H = 0, dpr = 1, L = {};
+  let W = 0, H = 0, dpr = 1, L = {}, narrow = false;
   let motes = [], pulses = [];
   let playing = !reduce;
   let slop = false;
@@ -137,16 +139,24 @@
     L.inX = W * 0.045; L.memX = W * 0.28; L.seenX = W * 0.44; L.mergeX = W * 0.585;
     L.humanX = W * 0.73; L.humanY = H * 0.26;
     L.prodX = W * 0.91; L.prodY = H * 0.56;
-    L.midY = H * 0.5; L.band = H * 0.42;
+    L.midY = H * 0.5; L.band = H * (narrow ? 0.34 : 0.42);
     L.memBottom = L.midY + L.band / 2;
-    L.healthY = L.memBottom + H * 0.09;                          // "daily health" title (dropped for spacing)
-    L.wardenX = L.memX - W * 0.06; L.wardenY = L.memBottom + H * 0.17;   // self-healing (left)
-    L.reportX = L.memX + W * 0.06; L.reportY = L.wardenY;                // fleet report (right, same row)
+    if (narrow) {
+      // Stack the daily-health nodes vertically so their labels don't collide on a phone.
+      L.healthY = L.memBottom + H * 0.05;
+      L.wardenX = L.memX; L.wardenY = L.memBottom + H * 0.12;              // self-healing (top)
+      L.reportX = L.memX; L.reportY = L.memBottom + H * 0.22;             // fleet report (below)
+    } else {
+      L.healthY = L.memBottom + H * 0.09;                          // "daily health" title (dropped for spacing)
+      L.wardenX = L.memX - W * 0.06; L.wardenY = L.memBottom + H * 0.17;   // self-healing (left)
+      L.reportX = L.memX + W * 0.06; L.reportY = L.wardenY;                // fleet report (right, same row)
+    }
   }
   function resize() {
     const r = cv.getBoundingClientRect(); if (!r.width) return;
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = r.width; H = r.height;
+    narrow = W < 560;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     layout();
@@ -297,7 +307,8 @@
 
     // daily-health group (dropped entirely in slop mode)
     if (!slop) {
-      const dhX = L.memX - W * 0.135, dhY = L.healthY - 15, dhW = W * 0.27, dhH = (L.wardenY + 22) - dhY;
+      const dhW = narrow ? W * 0.46 : W * 0.27;
+      const dhX = L.memX - dhW / 2, dhY = L.healthY - 15, dhH = ((narrow ? L.reportY : L.wardenY) + 22) - dhY;
       ctx.save();
       ctx.setLineDash([2, 4]); ctx.strokeStyle = "rgba(42,169,201,0.35)"; ctx.lineWidth = 1;
       ctx.beginPath();
@@ -347,17 +358,18 @@
     }
 
     // labels (bare nouns — motion and width carry the rest)
-    lab(L.inX - 2, L.midY - L.band / 2 - 8, "missions", C.muted, "left", 11.5, "500 ");
-    lab(L.memX, H * 0.075, "persistent memory", C.muted, "center", 11.5, "500 ");
-    lab(L.seenX, L.midY - L.band * 0.4, slop ? "perceived bug" : "confirmed bug", C.muted, "center", 10);
-    lab(L.humanX, L.humanY - 14, "human", slop ? "#e0645a" : C.gold, "center", 11, "500 ");
-    lab(L.prodX, L.prodY - pr - 8, "production", C.ink, "center", 12.5, "600 ");
+    lab(L.inX - 2, L.midY - L.band / 2 - 8, "missions", C.muted, "left", narrow ? 10 : 11.5, "500 ");
+    lab(L.memX, H * 0.075, narrow ? "memory" : "persistent memory", C.muted, "center", narrow ? 9.5 : 11.5, "500 ");
+    // On mobile: shorten the crowded stage labels and stagger confirmed/approve onto separate rows.
+    lab(L.seenX, L.midY - L.band * (narrow ? 0.46 : 0.4), slop ? "perceived" + (narrow ? "" : " bug") : "confirmed" + (narrow ? "" : " bug"), C.muted, "center", narrow ? 8.5 : 10);
+    lab(L.humanX, L.humanY - 14, "human", slop ? "#e0645a" : C.gold, "center", narrow ? 10 : 11, "500 ");
+    lab(L.prodX, L.prodY - pr - 8, narrow ? "prod" : "production", C.ink, "center", narrow ? 11 : 12.5, "600 ");
     if (!slop) {
-      lab(L.mergeX, L.midY - L.band * 0.4, "approve fix", C.muted, "center", 10);
-      lab((L.seenX + L.mergeX) / 2, L.midY + L.band * 0.34 + 13, "rework", "#d08a4a", "center", 9.5);
-      lab(L.memX, L.healthY, "daily health", C.blue, "center", 10.5, "600 ");
-      lab(L.wardenX, L.wardenY + 16, "self-healing", C.muted, "center", 10);
-      lab(L.reportX, L.reportY + 16, "fleet report", C.muted, "center", 10);
+      lab(L.mergeX, L.midY - L.band * (narrow ? 0.22 : 0.4), narrow ? "approve" : "approve fix", C.muted, "center", narrow ? 8.5 : 10);
+      lab((L.seenX + L.mergeX) / 2, L.midY + L.band * (narrow ? 0.3 : 0.34) + 13, "rework", "#d08a4a", "center", narrow ? 8.5 : 9.5);
+      lab(L.memX, L.healthY, "daily health", C.blue, "center", narrow ? 9.5 : 10.5, "600 ");
+      lab(L.wardenX, L.wardenY + (narrow ? 14 : 16), narrow ? "self-heal" : "self-healing", C.muted, "center", narrow ? 8.5 : 10);
+      lab(L.reportX, L.reportY + (narrow ? 14 : 16), narrow ? "report" : "fleet report", C.muted, "center", narrow ? 8.5 : 10);
     }
   }
 
