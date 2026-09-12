@@ -12,6 +12,7 @@ import CreedForces from '../../components/CreedForces.astro';
 Software factories are a contested topic, with some teams claiming completely [lights-off](https://www.strongdm.com/blog/the-strongdm-software-factory-building-software-with-ai) factories — where nobody reads or manages a single line of code. The [other side](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md) says that lights-off does not hold on complex, scaled, production codebases.
 
 [Punchcard](https://punchcard.com) is a financial audit platform ingesting and checking thousands of documents every day in live audits, with a large breadth of features and systems to maintain. All said, the constraints as the platform relentlessly grew were very real: [Nathan Turnbow](https://www.linkedin.com/in/turnbow/) and I had a team 1–5% the size of the incumbents, in an industry where reliability meant everything, while also seeking to spend every minute with customers working on novel problems and keeping a lead on innovation in our space.
+
 It didn't take long for the idea of an internal engineering agent to germinate and sprout in my mind, before the "factory" term was coined, but it was certainly that same shape of solution.
 
 The two ambitious targets were:
@@ -29,7 +30,7 @@ That said, having worked with AI coding agents for a while, I knew the risk of a
 
 The earliest version was dubbed "Exterminator" — the ultimatum for bugs rather than another bug bot: squash them before they hit a user. We later renamed it Creed, after the head of QA at Dunder Mifflin.
 
-On the spectrum of software factory zealots vs. skeptics, we have found great results somewhere in between — very often lights-out, yet regarding sustainability I'd estimate we've fielded close to a fifth of the bug reports while our customer base and activity grew ~5–6× over the same seven-month period.
+On the spectrum of software factory zealots vs. skeptics, we have found great results somewhere in between — very often lights-out, yet regarding sustainability I'd estimate over a seven month period, we've fielded close to a fifth of user bug reports compared to the previous baseline, while our customer base and activity grew ~5–6× over the same period.
 
 These are the areas I see as delivering the key systemic balances:
 
