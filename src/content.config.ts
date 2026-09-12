@@ -17,8 +17,8 @@ const writing = defineCollection({
   }),
 });
 
-// Systems collection (Creed, CoAudit) — defined now for type-safety; the
-// /systems section itself is a future phase (no placeholder content shipped).
+// Systems collection (Creed, CoAudit). CoAudit stays in content but is
+// hidden from the Systems index until that writeup is ready.
 const systems = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/systems' }),
   schema: z.object({

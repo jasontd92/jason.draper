@@ -6,26 +6,25 @@ import Reveal from '../../components/Reveal.tsx';
 
 // Show active systems first, then archived; stable by name within each group.
 const order = { active: 0, archived: 1 } as const;
-const systems = (await getCollection('systems')).sort(
-  (a, b) =>
-    order[a.data.status] - order[b.data.status] ||
-    a.data.name.localeCompare(b.data.name),
-);
+const systems = (await getCollection('systems'))
+  .filter((sys) => sys.id !== 'coaudit')
+  .sort(
+    (a, b) =>
+      order[a.data.status] - order[b.data.status] ||
+      a.data.name.localeCompare(b.data.name),
+  );
 ---
 
 <Base
   title="Systems"
-  description="Production AI agent systems built by Jason Draper — Creed (autonomous QA engineering engine) and CoAudit (an audit agent embedded in Excel and Word)."
+  description="Applied AI Architectures"
 >
   <section class="wrap">
     <Reveal client:load>
       <header class="page-head">
         <h1>Systems</h1>
-        <p>
-          Production AI agent systems I've built and shipped. The recurring
-          theme: the model is the easy part — reliability comes from
-          orchestration.
-        </p>
+        <p>Applied AI Architectures</p>
+
       </header>
     </Reveal>
 
@@ -38,8 +37,7 @@ const systems = (await getCollection('systems')).sort(
             <Reveal client:visible delay={i * 0.08}>
               <a class="card-link" href={`/systems/${sys.id}`}>
                 <GlassCard as="article" class="sys-card">
-                  <h2>{sys.data.name}</h2>
-                  <p class="tagline">{sys.data.tagline}</p>
+                  <h2>{sys.data.tagline}</h2>
                   <p class="desc">{sys.data.description}</p>
                   <span class="read">Read →</span>
                 </GlassCard>
@@ -92,11 +90,6 @@ const systems = (await getCollection('systems')).sort(
     font-size: 1.35rem;
     font-weight: 650;
     letter-spacing: -0.01em;
-    margin: 0;
-  }
-  .tagline {
-    color: var(--text-primary);
-    font-weight: 500;
     margin: 0;
   }
   .desc {
