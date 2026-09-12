@@ -59,8 +59,6 @@ const articleSchema = {
       <a class="back" href="/writing">← Writing</a>
       <h1>{post.data.title}</h1>
       <div class="meta">
-        <span>Jason Draper</span>
-        <span aria-hidden="true">·</span>
         <time datetime={post.data.pubDate.toISOString()}>
           {fmt(post.data.pubDate)}
         </time>
@@ -81,6 +79,14 @@ const articleSchema = {
     </div>
 
     <footer class="post-foot">
+      <p class="connect">
+        Connect on
+        <a
+          href="https://linkedin.com/in/jasontdraper"
+          target="_blank"
+          rel="noopener me">LinkedIn</a
+        >.
+      </p>
       <a class="back" href="/writing">← Back to all writing</a>
     </footer>
   </article>
@@ -136,5 +142,20 @@ const articleSchema = {
     margin-top: 3.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-glass);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .connect {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .connect a {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .connect a:hover {
+    color: var(--accent);
   }
 </style>

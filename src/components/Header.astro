@@ -1,7 +1,4 @@
 ---
-const path = Astro.url.pathname;
-const isActive = (href: string) =>
-  href === '/' ? path === '/' : path.startsWith(href);
 ---
 
 <header class="site-header">
@@ -9,25 +6,6 @@ const isActive = (href: string) =>
     <a href="/" class="brand" aria-label="Jason Draper — home">
       Jason&nbsp;Draper
     </a>
-    <nav aria-label="Primary">
-      <a href="/writing" class:list={['nav-link', { on: isActive('/writing') }]}>
-        Writing
-      </a>
-      <a href="/systems" class:list={['nav-link', { on: isActive('/systems') }]}>
-        Systems
-      </a>
-      <a href="/about" class:list={['nav-link', { on: isActive('/about') }]}>
-        About
-      </a>
-      <a
-        href="https://linkedin.com/in/jasontdraper"
-        class="nav-link linkedin"
-        target="_blank"
-        rel="noopener me"
-      >
-        LinkedIn
-      </a>
-    </nav>
   </div>
 </header>
 
@@ -56,33 +34,9 @@ const isActive = (href: string) =>
     letter-spacing: -0.01em;
     font-size: 1.02rem;
   }
-  nav {
-    display: flex;
-    gap: 1.4rem;
-    align-items: center;
-  }
   @media (max-width: 560px) {
     .inner {
       padding: 0.8rem 1.1rem;
     }
-    nav {
-      gap: 1rem;
-    }
-    .nav-link.linkedin {
-      display: none;
-    }
-  }
-  .nav-link {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: color 0.18s ease;
-  }
-  .nav-link:hover,
-  .nav-link.on {
-    color: var(--text-primary);
-  }
-  .nav-link.on {
-    text-shadow: 0 0 18px rgba(59, 130, 246, 0.35);
   }
 </style>

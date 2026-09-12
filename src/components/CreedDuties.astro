@@ -1,5 +1,5 @@
 ---
-const POWERS = ["file\nfinding", "author\nfix", "merge", "answer\nreview", "resolve\nthread", "close\nissue", "change\npipeline"];
+const POWERS = ["open\nissue", "author\nfix", "merge", "answer\nreview", "resolve\nthread", "close\nissue", "change\npipeline"];
 const ROLES = [
   { name: "Verify", cells: ["own", "", "", "", "", "", ""] },
   { name: "Fix", cells: ["", "own", "wall", "own", "", "wall", ""] },
@@ -9,7 +9,7 @@ const ROLES = [
   { name: "Self-healer", cells: ["", "", "wall", "", "", "wall", "own"] },
   { name: "Human", cells: ["", "", "protect", "", "", "", ""] }
 ];
-const ARIA = "A segregation-of-duties matrix: seven roles against seven sensitive powers. Filing findings is owned by Verify and observers; authoring a fix and answering its review by the Fix agent, which is walled out of merging and closing; merging by the merge gate, and by a human on protected paths; resolving a review thread by a separate judge; closing an issue only by a re-test; changing the pipeline only by the nightly self-healer, which is walled out of merging product or closing findings. No role holds two conflicting powers.";
+const ARIA = "A segregation-of-duties matrix: seven roles against seven sensitive powers. Opening issues is owned by Verify; authoring a fix and answering its review by the Fix agent, which is walled out of merging and closing; merging by the merge gate, and by a human on protected paths; resolving a review thread by a separate judge; closing an issue only by a re-test; changing the pipeline only by the nightly self-healer, which is walled out of merging product or closing findings. No role holds two conflicting powers.";
 ---
 
 <div class="creed-sod">

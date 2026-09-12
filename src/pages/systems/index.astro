@@ -37,6 +37,7 @@ const systems = (await getCollection('systems'))
             <Reveal client:visible delay={i * 0.08}>
               <a class="card-link" href={`/systems/${sys.id}`}>
                 <GlassCard as="article" class="sys-card">
+                  <p class="name">{sys.data.name}</p>
                   <h2>{sys.data.tagline}</h2>
                   <p class="desc">{sys.data.description}</p>
                   <span class="read">Read →</span>
@@ -91,6 +92,14 @@ const systems = (await getCollection('systems'))
     font-weight: 650;
     letter-spacing: -0.01em;
     margin: 0;
+  }
+  .name {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
   }
   .desc {
     color: var(--text-muted);

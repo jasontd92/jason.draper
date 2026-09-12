@@ -35,17 +35,12 @@ export async function GET(context: APIContext) {
     url: base,
     location: 'Utah, USA',
     roles: [
-      'Technical Co-Founder',
       'Product Engineer',
       'Forward Deployed Engineer',
+      'Founding Engineer',
     ],
-    current: {
-      title: 'Technical Co-Founder',
-      organization: 'Punchcard',
-      organization_url: 'https://punchcard.com',
-      note: 'AI-powered audit automation (YC S23)',
-    },
     background: [
+      'Technical Co-Founder, Punchcard — AI-powered audit automation (YC S23)',
       'Co-Founder & CTO, FairQuote (home-service management)',
       'U.S. Air Force — ICBM Missile Launch Officer & Emergency War Order Planner, 321st Missile Squadron (4+ years active duty)',
     ],

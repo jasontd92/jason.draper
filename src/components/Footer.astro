@@ -1,20 +1,9 @@
 ---
-const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="inner">
-    <p class="tag">
-      Jason Draper — Technical Co-Founder @ <a
-        href="https://punchcard.com"
-        target="_blank"
-        rel="noopener">Punchcard</a
-      >
-    </p>
     <nav aria-label="Footer">
-      <a href="/writing">Writing</a>
-      <a href="/systems">Systems</a>
-      <a href="/about">About</a>
       <a href="/rss.xml">RSS</a>
       <a
         href="https://linkedin.com/in/jasontdraper"
@@ -22,7 +11,6 @@ const year = new Date().getFullYear();
         rel="noopener me">LinkedIn</a
       >
     </nav>
-    <p class="copy">© {year} Jason Draper</p>
   </div>
 </footer>
 
@@ -41,16 +29,10 @@ const year = new Date().getFullYear();
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 0.75rem 1.5rem;
     color: var(--text-muted);
     font-size: 0.9rem;
-  }
-  .tag a {
-    color: var(--text-primary);
-  }
-  .tag a:hover {
-    color: var(--accent);
   }
   nav {
     display: flex;
@@ -59,19 +41,10 @@ const year = new Date().getFullYear();
   nav a:hover {
     color: var(--text-primary);
   }
-  .copy {
-    color: var(--text-muted);
-  }
-  .credit {
-    opacity: 0.75;
-  }
-  .credit a:hover {
-    color: var(--accent);
-  }
   @media (max-width: 640px) {
     .inner {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
     }
   }
 </style>

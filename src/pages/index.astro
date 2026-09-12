@@ -1,17 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Reveal from '../components/Reveal.tsx';
-
-const posts = (await getCollection('writing')).sort(
-  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
-);
-const latest = posts[0];
 ---
 
 <Base
   title="Jason Draper"
-  description="Technical Co-Founder at Punchcard (YC S23). Missile launch officer turned founder, building AI agents reliable enough for regulated work. Writing on LLM reliability, agent orchestration, and audit automation."
+  description="Writing on LLM reliability, agent orchestration, and audit-grade automation. Former Punchcard (YC S23) technical co-founder and U.S. Air Force nuclear missile launch officer."
 >
   <section class="launcher">
     <h1 class="sr-only">Jason Draper</h1>
@@ -38,18 +32,6 @@ const latest = posts[0];
             </svg>
           </span>
           <span class="app-label">Systems</span>
-        </a>
-      </Reveal>
-
-      <Reveal client:visible delay={0.14}>
-        <a class="app" href="/about">
-          <span class="app-icon about">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="9" r="3.2"></circle>
-              <path d="M6 19c0-3 2.7-5 6-5s6 2 6 5"></path>
-            </svg>
-          </span>
-          <span class="app-label">About</span>
         </a>
       </Reveal>
     </nav>
@@ -123,9 +105,6 @@ const latest = posts[0];
   }
   .app-icon.systems {
     background: linear-gradient(150deg, rgba(42, 169, 201, 0.92), rgba(20, 55, 95, 0.95));
-  }
-  .app-icon.about {
-    background: linear-gradient(150deg, rgba(64, 200, 180, 0.9), rgba(18, 80, 110, 0.95));
   }
   .app-label {
     font-weight: 550;

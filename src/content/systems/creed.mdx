@@ -28,9 +28,9 @@ That said, having worked with AI coding agents for a while, I knew the risk of a
 - Accidentally optimizing for the wrong reward
 - Maintenance, which is always easy to overlook
 
-The earliest version was dubbed "Exterminator" — the ultimatum for bugs rather than another bug bot: squash them before they hit a user. We later renamed it Creed, after the head of QA at Dunder Mifflin.
+The earliest version was dubbed "Exterminator" — the ultimatum for bugs rather than another bug bot: squash them before they hit a user. We later renamed it Creed, after the iconic head of QA at Dunder Mifflin.
 
-On the spectrum of software factory zealots vs. skeptics, we have found great results somewhere in between — very often lights-out, yet regarding sustainability I'd estimate over a seven month period, we've fielded close to a fifth of user bug reports compared to the previous baseline, while our customer base and activity grew ~5–6× over the same period.
+On the spectrum of software factory zealots vs. skeptics, we have found great results somewhere in between — very often lights-out, but built so the factory stays sustainable as the product and customer base grow.
 
 These are the areas I see as delivering the key systemic balances:
 
@@ -40,11 +40,11 @@ Rather than a single orchestrator, Creed is a distributed graph of ~40 actions (
 
 ![Map, Verify, and Fix share memory.](/images/systems/creed-loops.svg)
 
-- **Map** keeps a picture of the product truthful and turns it into missions. 
-- **Verify** runs those missions in a real browser, including what just shipped, and what production logs/telemetry are already flagging. 
+- **Map** maintains the working model of the product and turns it into missions.
+- **Verify** checks those missions against reality (browser + what prod is already flagging).
 - **Fix** turns a verified finding into a merged, re-tested change.
 
-The jobs themselves are each self-contained. A cron, a label, or a deploy triggers and enqueues work; the worker writes a persisted artifact and exits. Subsequent actions read from the same memory and global state. Orchestrated entirely through GitHub Actions and self-hosted runners on AWS, before cron jobs and Cloud Agents started shipping as features with tools like Cursor and Linear.
+The jobs themselves are each self-contained. A cron, a label, or a deploy triggers and enqueues work; the worker writes a persisted artifact and exits. Subsequent actions read from the same memory and global state. Orchestrated entirely through GitHub Actions and self-hosted runners on AWS (before cron jobs and Cloud Agents started shipping as features with tools like Cursor and Linear).
 
 ## High signal or bust
 
@@ -68,11 +68,11 @@ Additionally, an LLM's verbalized confidence is not a score you can reliably thr
 
 ## You can't tell the story of Moby Dick from blueprints
 
-Inevitably, the system requires intelligent awareness of real user journeys through the product in order to know what to prioritize and test. A naive approach to building that knowledge is asking an LLM to infer user journeys and product intent from static code analysis. 
+Inevitably, a system like this requires intelligent awareness of real user journeys through the product in order to know what to prioritize and test. A naive approach to building that knowledge is asking an LLM to infer user journeys and product intent from static code analysis. But reading a React component tree to reconstruct intent is not unlike trying to tell someone the story of Moby Dick by looking at Captain Ahab's ship blueprints.
 
-Fortunately, we already had an important building block available. Self-maintaining, user-facing product documentation, built for our platform changelog and as queryable context for our generalist platform agent, CoAudit — framed from a **user** perspective, derived from PR and commit descriptions (which coding agents have done wonders for). Inferring the same thing from the React tree is not unlike trying to tell someone the story of Moby Dick by looking at Captain Ahab's ship blueprints.
+Fortunately, we already had an important building block available. Self-maintaining, user-facing product documentation, built for our platform changelog and as queryable context for our generalist platform agent, CoAudit — framed from a **user** perspective, derived from PR and commit descriptions (which coding agents have done wonders for).
 
-Later we paired that with more structured maps: deterministic enough to map the dependencies and seed the fixtures given a lexical mission definition, as one less step to spend token budget on every session.
+Later we paired that with more structured maps that deterministically resolve dependencies and seed fixtures from a lexical mission definition — one less step burning token budget every session.
 
 ## Nobody grades their own homework
 
@@ -83,7 +83,7 @@ Later we paired that with more structured maps: deterministic enough to map the 
   </footer>
 </blockquote>
 
-To stay unsupervised and long-running (meaning, weeks to months without intervention), it needed both the right incentives and no way to game them, the way model training sometimes tries to [game its own evals](https://openai.com/index/hugging-face-incident-and-the-road-ahead/). An easy gaming example: give it "drive reported bugs to zero" and it's not out of the question that it authors its own softball tests that don't actually surface bugs, or worse, deletes whole features in the interest of stability (Tron Legacy has a whole movie plot around this).
+To stay unsupervised and long-running (meaning, weeks to months without intervention), it needed both the right incentives and no way to game them (the way frontier models sometimes [reward-hack their evals](https://openai.com/index/hugging-face-incident-and-the-road-ahead/)). An easy gaming example: give it "drive reported bugs to zero" and it's not out of the question that it authors its own softball tests that don't actually surface bugs, or worse, deletes whole features in the interest of stability ([Tron Legacy](https://en.wikipedia.org/wiki/Tron:_Legacy) has a whole movie plot around this).
 
 As such, approval/merge was the last purely human-in-the-loop step.
 
@@ -105,7 +105,7 @@ I am a big fan of the concept of [backpressure](https://www.humanlayer.dev/blog/
 
 Proof-of-work was a great example of backpressure at merge: a screenshot empirically proved to human and agent alike that the app compiled, the full stack still works, and the UI didn't regress — multiple questions at a glance. From there, a reviewer can immediately drill the known dangerous diffs, if any, without needing to check out the feature branch and boot up a new local instance themselves.
 
-The scarce, finite resource being protected throughout was human attention. The visualization below shows how ~59% of all Creed PRs were found, fixed, and approved without any human intervention.
+The scarce, finite resource being protected throughout was **human attention**. The visualization below shows how ~59% of all Creed PRs were found, fixed, and approved without any human intervention.
 
 <CreedFactory />
 
@@ -132,8 +132,10 @@ A nightly agent looks at the north-star fleet metrics — PRs merged, missions r
   </div>
 </div>
 
-This is coverage that lets us both prevent *and* react to bugs. Though I don't have exact support-case numbers, the shift has been noticeable. Yes — confounding variables exist like models getting better, etc. Regardless, from my own anecdotal experience I'd estimate we've fielded close to a fifth of the bug reports while the customer base and activity grew about 5–6× over the same period.
+This is coverage that let us both prevent *and* react to bugs. Though I don't have exact support-case numbers, the shift has been noticeable. From my own anecdotal experience I'd estimate we've fielded close to a fifth of the bug reports while the customer base and activity grew about 5–6× over the same period.
+
+Was it just better models? Those should also have helped humans ship fewer bugs. In our own repo, bugs caught in code review did not drop by anything significant over the same period.
 
 The mark of an unsustainable system is reported issues climbing with time, and requiring increasingly more resources to untangle the mess.
 
-A great part of where this particular software factory architecture sits is that for every stride model advancements make for coding reliability, the only meaningful adjustment needed is relaxing the auto-approve gates accordingly. The same efficiencies and guarantees from distributed roles, signal-to-noise prioritization, and maintained knowledge base remain reusable.
+The future-proof part of this software factory architecture is that for every stride model advancements make for coding reliability, the only meaningful adjustment needed is relaxing the auto-approve gates accordingly. The same efficiencies and guarantees from distributed roles, signal-to-noise prioritization, and maintained knowledge base remain reusable.
