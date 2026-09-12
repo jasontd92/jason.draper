@@ -1,6 +1,6 @@
 ---
 name: Creed
-tagline: An autonomous QA engineering engine
+tagline: Autonomous QA engineering engine
 description: >-
   A QA engine that finds and fixes bugs without a human in the loop — three
   loops, a high-signal bar, and a factory that repairs itself.
@@ -8,15 +8,21 @@ status: active
 ---
 
 import CreedFactory from '../../components/CreedFactory.astro';
+import CreedDuties from '../../components/CreedDuties.astro';
+import CreedForces from '../../components/CreedForces.astro';
 
-Building [Punchcard](https://punchcard.com), the AI-native platform for financial audits, [Nathan Turnbow](https://www.linkedin.com/in/turnbow/) and I found ourselves facing some constraints common to lean engineering teams. Large techincal surface area (document ingestion at scale, custom user workflows, chat agents, project managment UIs, etc), whith reliability as a non-negotiable for anyone to trust the product with live audits. An engineering team a 1-10% the size of established incumbents. And most of our time needed to go to actually understanding customers and trying a lot of approaches to solving novel problems before one stuck.
+Software factories are a contested topic, with some teams claiming completely [lights-off](https://www.strongdm.com/blog/the-strongdm-software-factory-building-software-with-ai) factories — where nobody reads or manages a single line of code. The [other end](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md) says that does not hold on complex, production codebases.
 
-The idea for a horizontally scalable, internal engineering agent did not take long to germinate and sprout in my mind. The two ambitious targets being:
+[Punchcard](https://punchcard.com) is a financial audit platform ingesting and checking thousands of documents every day in live audits with a large breadth of features and systems to maintain. All said, the constraints as the platform relentlessly grew in technical breadth were real: [Nathan Turnbow](https://www.linkedin.com/in/turnbow/) and I had a team 1–5% the size of the incumbents, in an industry where reliability meant everything, and we also needed to spend every minute we had with customers solving the next new problem.
+
+It didn't take long for the idea of an internal engineering agent to germinate and sprout in my mind, before the "factory" term was coined, but it was certainly that same shape of solution.
+
+The two ambitious targets were:
 
 - No more user-reported bugs (zero!)
-- A peer-level internal engineer who could be trusted withend-to-end ownership of finding bugs *and* fixing them, both proactively and reactively
+- A horizontally scalable, *peer-level* engineer who could be trusted with end-to-end ownership of finding bugs and fixing them, unsupervised
 
-That said, having worked with AI coding agents for a while, I knew the risks of creating an "AI-slop cannon" at scale was real:
+That said, having worked with AI coding agents for a while, I knew the risk of an ["AI-slop cannon"](https://www.linkedin.com/posts/miikahuttunen_posthog-and-james-hawkins-are-on-another-activity-7503526785288945664-6JpL) at scale:
 
 - Heavy token burn for marginal insight
 - Half-finished or shortsighted fixes
@@ -24,33 +30,29 @@ That said, having worked with AI coding agents for a while, I knew the risks of 
 - Accidentally optimizing for the wrong reward
 - Maintenance, which is always easy to overlook
 
-AI being involved in *fixing* bugs was obvious. Where did it fit on the QA side? Well — the same place a human does. Testing every permutation of any extensive product does not scale. You try to understand the highest-value, realistic user journeys through it.
+The earliest version was dubbed "Exterminator" — the ultimatum for bugs rather than another bug bot: squash them before they hit a user. We later renamed it Creed, after the head of QA at Dunder Mifflin.
 
-The earliest version was dubbed "Exterminator". Not just another bug bot - the ultimatum on all bugs: ideally, none of them escape to prod and hit a real user. We later renamed it Creed, after the iconic head of QA at Dunder Mifflin. 
+On the spectrum of software factory zealots vs. skeptics, we have found great results somewhere in between — very often lights-out, yet regarding sustainability I'd estimate we've fielded close to a fifth of the bug reports while our customer base and activity grew ~5–6× over the same seven-month period.
+
+These are the areas I see as delivering the key systemic balances:
 
 ## Three loops, not one agent
 
-Rather than a single orchestrator, Creed is a distributed graph of ~40 distinct actions (each a distinct role, incentive, and trigger), grouped core into three core self-contained loops.
+Rather than a single orchestrator, Creed is a distributed graph of ~40 actions (each a role, incentive, and trigger), grouped into three self-contained loops.
 
 ![Map, Verify, and Fix share memory.](/images/systems/creed-loops.svg)
 
-**Map** keeps a picture of the product truthful and turns it into missions. **Verify** walks those missions in a real browser, around the clock. **Fix** turns a verified finding into a merged, re-tested change.
+- **Map** keeps a picture of the product truthful and turns it into missions. 
+- **Verify** runs those missions in a real browser, including what just shipped, and what production logs/telemetry are already flagging. 
+- **Fix** turns a verified finding into a merged, re-tested change.
 
-Two other things feed the same fix queue. After a deploy, a review walk hits what just shipped. In production, errors and session friction show up on their own. Prevent and react, same system.
+The jobs themselves are each self-contained. A cron, a label, or a deploy triggers and enqueues work; the worker writes a persisted artifact and exits. Subsequent actions read from the same memory and global state. Orchestrated entirely through GitHub Actions and self-hosted runners on AWS, before cron jobs and Cloud Agents started shipping as features with tools like Cursor and Linear.
 
-A nightly "Warden" is allowed to repair the factory, but never the product.
+## High signal or bust
 
-The jobs are throwaway. A cron tick, a label, or a deploy puts work on a queue. The worker writes a few artifacts — maps, missions, findings, labels — and exits. The next job reads those; it isn't called. If two walks finish at once, you re-read before you write so one doesn't blow away the other. The walks started by enqueueing themselves but the traffic got lumpy, and hard to manage against paced dollar costs.
+This will be a recurring theme in more than one area of Creed, but token burn for marginal insight tends to produce a lot of noise. Low signal-to-noise output just gets ignored, and is worse than no signal at all. 
 
-This was before frontier companies started offering out-of-the-box cloud agents and cron jobs, so a lot of the rails + runner infra was hand-rolled through GitHub Actions and self-hosted on AWS. It was great to see those patterns started shipping out of the box.
-
-## High signal, or it is spam
-
-One tradeoff became very clear as I montiered the traffic for the first week. We could get a high volume of PRs — every possible fix — with a lot of noise mixed in (false positives, bandaids slapped on bigger issues, etc.), or a lower volume with extremely high merge confidence. High signal wins every time, otherwise it turns into an email inbox overflowed with messages that feel safe to ignore.
-
-A system built for horizontal scale that still needs a developer in every step just meant Nathan and I were queuing ourselves up as full-time reviewers, and losing the R&D, and [becoming the bottleneck](https://linearb.io/dev-interrupted/podcast/linearb-2026-benchmarks-ai-pr-merge-rate).
-
-Browser walks via Playwright can be flaky, and LLMs are, in my experience, pretty bad at scoring their own confidence like you get from a traditional neural net — so we treat a bug report as a binary: is this reproducible, or not?
+When it comes to proactively discovering bugs, it turns out Playwright-based browser testing runs can be flaky, for various reasons, causing false reports. When we required repeatability across two occurrences, observed false positives were close to zero.
 
 <div class="pair">
   <div>
@@ -64,17 +66,15 @@ Browser walks via Playwright can be flaky, and LLMs are, in my experience, prett
   </div>
 </div>
 
-At two occurences, false positives were close to zero.
+Additionally, an LLM's verbalized confidence is not a score you can reliably threshold like an [object detection model](https://docs.ultralytics.com/tasks/detect/), so we treat a bug report as a binary: is this reproducible, or not?
 
-## Don't reconstruct the story of Moby Dick from ship blueprints
+## You can't tell the story of Moby Dick from blueprints
 
-In terms of maintaining a knowledge base, a naive approach is asking an llm to infer user journeys and product intent from static code analysis.
+Inevitably, the system requires intelligent awareness of real user journeys through the product in order to know what to prioritize and test. A naive approach to building that knowledge is asking an LLM to infer user journeys and product intent from static code analysis. 
 
-Fortunately, we already had an important building block to use. Self-maintining, user-facing product documentation, which had been built for the changelog and for [CoAudit](/systems/coaudit) — framed from a **user** perspective, derived from PR and commit descriptions (which coding agents have done wonders for), rather than static code analysis. That second one drifts very quickly into storytelling anchored in React component trees, which is not unlike trying to tell the story of Moby Dick by looking at Captain Ahab's whaling ship blueprints. 
+Fortunately, we already had an important building block available. Self-maintaining, user-facing product documentation, built for our platform changelog and as queryable context for our generalist platform agent, CoAudit — framed from a **user** perspective, derived from PR and commit descriptions (which coding agents have done wonders for). Inferring the same thing from the React tree is not unlike trying to tell someone the story of Moby Dick by looking at Captain Ahab's ship blueprints.
 
-Later we paired that with more structured maps: deterministic enough to plan a walk and seed the environment it needs, making it much cheaper to seed fixtures and determine the preprequisties before pointing an llm at testing a given user journey.
-
-For a while nothing really owned that seeding — creating fixtures, keeping them honest, unblocking missions that were just stalled in staging because the data wasn't there. Someone had to pick that up without also being the one who makes the test pass by making the fixture unrealistic. That's the kind of gap I still opened a PR for. Not the bug. The missing owner.
+Later we paired that with more structured maps: deterministic enough to map the dependencies and seed the fixtures given a lexical mission definition, as one less step to spend token budget on every session.
 
 ## Nobody grades their own homework
 
@@ -85,38 +85,39 @@ For a while nothing really owned that seeding — creating fixtures, keeping the
   </footer>
 </blockquote>
 
-If this thing was ever going to be unsupervised and long-running, it needed both the right incentives and no way to game them. Classic example: give it "drive reported bugs to zero" and it's not out of the question that it authors its own tests, or reviews its own code. [Frontier models will hack the reward](https://metr.org/blog/2025-06-05-recent-reward-hacking/) if you leave a gap.
+To stay unsupervised and long-running (meaning, weeks to months without intervention), it needed both the right incentives and no way to game them, the way model training sometimes tries to [game its own evals](https://openai.com/index/hugging-face-incident-and-the-road-ahead/). An easy gaming example: give it "drive reported bugs to zero" and it's not out of the question that it authors its own softball tests that don't actually surface bugs, or worse, deletes whole features in the interest of stability (Tron Legacy has a whole movie plot around this).
 
-I never actually watched Creed do those things — I built it with that in mind from the get-go. What we *did* have to optimize against was auto-merge escape rate. Without a hard "no escapes that don't work," a review prompt gets friendlier in a hurry.
+As such, approval/merge was the last purely human-in-the-loop step.
 
-Enter adversarial review. After a month or two of me taking the burden of reviewing every PR, we had a labeled set. Then I ran something in the spirit of [Karpathy's autoresearch](https://github.com/karpathy/autoresearch) on the review prompt itself: champion/challenger, keep the version that auto-approves more of the good PRs, kill it if escape rate moves. Letting any reverted or closed-as-wrong PR from that set through was non-negotiable. Those were exactly the ones that had already proved incomplete.
+After a month or two of reviewing every Creed PR, I had a sufficiently representative labeled set to run an experiment around **auto-approval**. In the spirit of [Karpathy's autoresearch approach](https://github.com/karpathy/autoresearch): we ran an optimization loop on a single code review prompt where each new prompt refinement was only kept if
+1) it auto-approved a higher percentage of valid PRs than the previous version, and 
+2) did not incorrectly approve *any* reverted or closed PRs in the labeled set (an "escape")
 
-A few rules that follow from that:
+The core set of roles required by Creed to operate autonomously is shown in the following matrix, which represents full coverage as a system, but no ability for any one agent to escape and game its own incentives.
 
-- The implementer is not the merger
-- The merge rules are not read from the PR
-- Fix PRs do not close issues — only a targeted re-test does
-- The Warden cannot close findings on intake's behalf
-- Its self-merge is path-gated to pipeline code; a second job fails the night if anything landed outside that list
-- Product fixes it files stay draft for a human
+<CreedDuties />
 
-Very important here: this software runs in live financial audits, under a lot of trust, with sensitive client data. Auth, migrations, infra, database mutations — they can run through every gate, but the last one is still a human.
+These roles in aggregate ensure that both progress and sustainability are maximized equally.
 
-We'd been building validators into the repo for a while — anything that can reject a change, not just the deterministic stuff. I first heard [Dex Horthy](https://www.humanlayer.dev/blog/context-efficient-backpressure) call that *backpressure*: keep the signals that bounce a change cheap enough that a long-running agent can actually use them. Lint and types, dead-code scans, unit tests, integration tests and proof-of-work, and adversarial review sitting in the same stack.
+<CreedForces />
 
-Proof-of-work sounds obvious, but it mattered. When PRs are coming in at high volume on a small team, median review time should drop as close to zero as you can get it. That means the highest-signal proofs first. A screenshot that the app actually compiled, that the full stack still works, and that the page didn't regress — three questions in one glance. Then you drill the known dangerous diffs.
+Very important to note here: our software runs in live financial audits, with sensitive client data. Auth, migrations, infra, database mutations are areas that are marked to universally require human approval (never automatic).
 
-Match the model to the job, too. The always-on walk is thorough, not a novel. Cheapest adequate model first; escalate when the job is harder. That's most of the efficiency story.
+I am a big fan of the concept of [backpressure](https://www.humanlayer.dev/blog/context-efficient-backpressure): the systems and code that ground the agent and prevent sloppy implementation, code bloat, and generally keep agents on the efficient path — lint, type checks, dead-code scans, tests, proof-of-work, adversarial review, and so on.
 
-After that labeled month, median review time was supposed to go to zero — except those exits. A gated process that actually holds is what keeps your attention from getting sucked into code that could have been corrected autonomously.
+Proof-of-work was a great example of backpressure at merge: a screenshot empirically proved to human and agent alike that the app compiled, the full stack still works, and the UI didn't regress — multiple questions at a glance. From there, a reviewer can immediately drill the known dangerous diffs, if any, without needing to check out the feature branch and boot up a new local instance themselves.
 
-## Something has to fix the factory
+The scarce, finite resource being protected throughout was human attention. The visualization below shows how ~59% of all Creed PRs were found, fixed, and approved without any human intervention.
 
-On a distributed system like this I knew there'd be paper cuts. Flaky infra. An unknown path for jobs to stall. Issue queues growing faster than the fix queue. A nightly agent looks at the north stars I actually care about — PRs merged, walks run, PRs reverted, queue health — and can author fixes to the rails. What it cannot do is rewrite the incentives it's scored on, or quietly merge a product change to make the graph look better.
+<CreedFactory />
 
-[HumanLayer tried a lights-out factory and shut it down in months](https://newsletter.pragmaticengineer.com/p/context-engineering-with-dex-horthy) once nobody had read the code. We wanted hands-free, not unread. Those wins did not come cheap.
+## Something has to fix the rails
 
-## Out of the queue
+Maintenance is the one that's often easy to underestimate. In this case, we knew that a distributed system like this would have its own share of paper cuts. Flaky infra, poisoned or stuck runners, one queue outpacing another and causing imbalance, and so on. 
+
+A nightly agent looks at the north-star fleet metrics — PRs merged, missions run, PRs reverted, queue health — and can author fixes to the rails.
+
+## Results
 
 <div class="stats">
   <div>
@@ -133,10 +134,8 @@ On a distributed system like this I knew there'd be paper cuts. Flaky infra. An 
   </div>
 </div>
 
-The important piece is that this is coverage that lets us both prevent *and* react. I don't have exact support-case numbers, but the shift has been noticeable enough to know something changed. Sure — confounding variables exist, models got better, etc. The proof-of-work and the ticket numbers are the parts I'd actually stand on. Anecdotally, I'd estimate we fielded close to a fifth of the bug reports while the customer base grew about 5× over the same period.
+This is coverage that lets us both prevent *and* react to bugs. Though I don't have exact support-case numbers, the shift has been noticeable. Yes — confounding variables exist like models getting better, etc. Regardless, from my own anecdotal experience I'd estimate we've fielded close to a fifth of the bug reports while the customer base and activity grew about 5–6× over the same period.
 
-This is not a [dark factory](https://simonwillison.net/2026/Feb/7/software-factory/) where nobody reads the code. Split find, judge, fix, and repair so none of them can grade their own homework. Put the incentives where the agent can't edit them. Optimize for signal, not throughput. Leave a human on the doors that actually matter.
+The mark of an unsustainable system is reported issues climbing with time, and requiring increasingly more resources to untangle the mess.
 
-Until it was producing work at a peer level, it wasn't worth the time. That's the whole thing. The same standard I wrote about in [*Albert Einstein Walks Into a Library*](/writing/albert-einstein-library) — repeatable, accurate, auditable in itself — applied to the factory that ships the product.
-
-<CreedFactory />
+A great part of where this particular software factory architecture sits is that for every stride model advancements make for coding reliability, the only meaningful adjustment needed is relaxing the auto-approve gates accordingly. The same efficiencies and guarantees from distributed roles, signal-to-noise prioritization, and maintained knowledge base remain reusable.

@@ -80,7 +80,7 @@
       </div>
     </div>
     <div class="canvas-frame">
-      <canvas id="factory" role="img" aria-label="Creed's QA factory drawn as a funnel. A dense stream of missions is walked against the product around the clock — roughly 2,000 a week. Almost all find nothing; only a bug confirmed by being seen twice (about 4.6 a day) becomes an issue in persistent memory. Every resulting fix ships to production — about 5 a day, 59% merged automatically. Around 2 a day detour through a human gate on protected paths such as auth, migrations, infrastructure and database mutations, then continue to production. Production also feeds bugs back in: real errors and session friction (Watchdog and UX Health) arrive already confirmed, entering directly at the confirmed-bug stage without needing a walk. About a quarter of fixes are sent back at the approve step — proof-of-work, lint, and review catching mistakes — before they pass. The human-in-the-loop also merges its own work — roughly 20 changes a day — straight to production. Reverts are rare: 3 in 7 months. Nightly, a self-healing pass repairs the pipeline itself — never the product — and a separate report goes to a human. A toggle switches to an ungated 'AI slop cannon', where every perceived bug lands on a human who cannot merge them all."></canvas>
+      <canvas id="factory" role="img" aria-label="Creed's QA factory drawn as a funnel. A dense stream of missions is run against the product around the clock — roughly 2,000 a week. Almost all find nothing; only a bug confirmed by being seen twice (about 4.6 a day) becomes an issue in persistent memory. Every resulting fix ships to production — about 5 a day, 59% merged automatically. Around 2 a day detour through a human gate on protected paths such as auth, migrations, infrastructure and database mutations, then continue to production. Production also feeds bugs back in: real errors and session friction (Watchdog and UX Health) arrive already confirmed, entering directly at the confirmed-bug stage without needing a mission run. About a quarter of fixes are sent back at the approve step — proof-of-work, lint, and review catching mistakes — before they pass. The human-in-the-loop also merges its own work — roughly 20 changes a day — straight to production. Reverts are rare: 3 in 7 months. Nightly, a self-healing pass repairs the pipeline itself — never the product — and a separate report goes to a human. A toggle switches to an ungated 'AI slop cannon', where every perceived bug lands on a human who cannot merge them all."></canvas>
     </div>
 
     <div class="bar">
@@ -102,7 +102,8 @@
   </figure>
 </div>
 
-<script>
+<script is:inline>
+(function(){
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const cv = document.getElementById("factory");
   const ctx = cv.getContext("2d");
@@ -429,4 +430,5 @@
   window.addEventListener("resize", resize);
   resize(); setPP(); renderStats();
   if (playing) requestAnimationFrame(frame); else staticFrame();
+})();
 </script>

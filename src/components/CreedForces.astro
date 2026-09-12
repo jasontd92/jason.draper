@@ -1,0 +1,90 @@
+---
+---
+<style>
+  .creed-forces {
+    --bg-2: #0a0f12;
+    --stroke: rgba(255, 255, 255, 0.13);
+    --ink: #eef4f3;
+    --muted: #93a3a1;
+    --faint: #5a6a67;
+    --teal: #2fd8c6;
+    --blue: #2aa9c9;
+    --gold: #c4a574;
+    --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, monospace;
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    margin: 2.5rem 0;
+  }
+  * { box-sizing: border-box; }
+  .creed-forces svg { display: block; width: 100%; height: auto; }
+  .creed-forces .legend { display: flex; gap: 1.3rem; margin-top: 0.4rem; font-family: var(--mono); font-size: 0.72rem; color: var(--faint); flex-wrap: wrap; }
+  .creed-forces .legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .creed-forces .dash { width: 15px; height: 0; border-top: 2px solid var(--teal); }
+  .creed-forces .dash.g { border-color: var(--blue); }
+</style>
+
+  <div class="creed-forces">
+    <figure>
+      <svg id="forces" viewBox="0 0 720 270" role="img"
+        aria-label="An incentive force diagram. Each role pulls its own way — Fix and the self-healer toward throughput; Verify, the review judge and re-test toward signal and safety; the merge gate and the human holding the balance. Their opposing pulls net to one straight resultant: a sustainable shortest path."></svg>
+    </figure>
+  </div>
+
+<script is:inline>
+(function(){
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const NS = "http://www.w3.org/2000/svg";
+  const s = document.getElementById("forces");
+  const C = { ship: "#2fd8c6", guard: "#2aa9c9", balance: "#c4a574", res: "#eef4f3", label: "#93a3a1", faint: "#5a6a67" };
+  const OX = 96, OY = 135;
+
+  // fanned top→bottom, ordered by extremity: most single-minded pulls outermost,
+  // the two balancers nearest the centre line; length ∝ how hard the role pulls.
+  const ROLES = [
+    { name: "Re-test",      deg: -52, pole: "guard",   len: 138 },
+    { name: "Verify",       deg: -37, pole: "guard",   len: 122 },
+    { name: "Review judge", deg: -21, pole: "guard",   len: 106 },
+    { name: "Merge gate",   deg: -6,  pole: "balance", len: 96 },
+    { name: "Human",        deg: 9,   pole: "balance", len: 98 },
+    { name: "Self-healer",  deg: 33,  pole: "ship",    len: 120 },
+    { name: "Fix",          deg: 55,  pole: "ship",    len: 138 }
+  ];
+
+  const mk = (t, a, p) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); (p || s).appendChild(n); return n; };
+  function arrow(g, x1, y1, x2, y2, color, w) {
+    mk("line", { x1, y1, x2, y2, stroke: color, "stroke-width": w, "stroke-linecap": "round" }, g);
+    const ang = Math.atan2(y2 - y1, x2 - x1), h = 5 + w * 1.7;
+    mk("line", { x1: x2, y1: y2, x2: x2 - h * Math.cos(ang - 0.42), y2: y2 - h * Math.sin(ang - 0.42), stroke: color, "stroke-width": w, "stroke-linecap": "round" }, g);
+    mk("line", { x1: x2, y1: y2, x2: x2 - h * Math.cos(ang + 0.42), y2: y2 - h * Math.sin(ang + 0.42), stroke: color, "stroke-width": w, "stroke-linecap": "round" }, g);
+  }
+
+  // static layer: origin dot, resultant, labels
+  mk("circle", { cx: OX, cy: OY, r: 3, fill: C.label });
+  arrow(s, OX, OY, 656, OY, C.res, 3.4);                         // resultant — dead straight
+  mk("text", { x: 656, y: OY - 12, fill: C.res, "font-size": 13, "font-weight": 650, "text-anchor": "end", "font-family": "Inter, system-ui, sans-serif" }, s).textContent = "sustainable shortest path";
+
+  // pole captions flanking the line (in place of a legend)
+  mk("text", { x: 470, y: 44, fill: C.faint, "font-size": 11, "text-anchor": "middle", "letter-spacing": "0.03em", "font-family": "Inter, system-ui, sans-serif" }, s).textContent = "signal · safety";
+  mk("text", { x: 470, y: 232, fill: C.faint, "font-size": 11, "text-anchor": "middle", "letter-spacing": "0.03em", "font-family": "Inter, system-ui, sans-serif" }, s).textContent = "throughput";
+
+  ROLES.forEach((r) => {
+    const a = r.deg * Math.PI / 180, tx = OX + r.len * Math.cos(a), ty = OY + r.len * Math.sin(a);
+    mk("text", { x: tx + 9, y: ty + (ty < OY ? -1 : 4), fill: C.label, "font-size": 11, "font-family": "Inter, system-ui, sans-serif" }, s).textContent = r.name;
+  });
+
+  const gArrows = mk("g", {});
+  function render(t) {
+    while (gArrows.firstChild) gArrows.removeChild(gArrows.firstChild);
+    ROLES.forEach((r, i) => {
+      const wob = reduce ? 0 : Math.sin(t / 900 + i * 1.3) * 2.4;    // gentle tug ±2.4°
+      const a = (r.deg + wob) * Math.PI / 180;
+      const len = r.len + (reduce ? 0 : Math.sin(t / 700 + i) * 4);
+      arrow(gArrows, OX, OY, OX + len * Math.cos(a), OY + len * Math.sin(a), C[r.pole], 1.6);
+    });
+  }
+  render(0);
+  if (!reduce) { (function loop(t) { render(t); requestAnimationFrame(loop); })(0); }
+})();
+</script>

@@ -198,12 +198,49 @@ main:has(.launcher) {
 }
 .prose ul,
 .prose ol {
-  padding-left: 1.35em;
+  list-style: none;
+  margin: 1.45em 0 1.65em;
+  padding: 0;
+  border-top: 1px solid var(--border-glass);
+  border-bottom: 1px solid var(--border-glass);
 }
 .prose li {
-  margin-top: 0.5em;
+  position: relative;
+  margin: 0;
+  padding: 0.8em 0 0.8em 1.15em;
+  border-bottom: 1px solid var(--border-glass);
 }
-.prose ul li::marker {
+.prose li:last-child {
+  border-bottom: none;
+}
+.prose ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  /* Padding + half of 1.65 line-height, then optically center the 1.5px mark. */
+  top: calc(0.8em + 0.825em);
+  width: 0.42rem;
+  height: 1.5px;
+  transform: translateY(-50%);
+  background: var(--accent);
+}
+.prose ol {
+  counter-reset: prose;
+}
+.prose ol li {
+  padding-left: 1.65em;
+}
+.prose ol li::before {
+  counter-increment: prose;
+  content: counter(prose);
+  position: absolute;
+  left: 0;
+  /* Same first-line lock as the ul dash. */
+  top: calc(0.8em + 0.825em);
+  transform: translateY(-50%);
+  font-size: 1em;
+  font-weight: 650;
+  line-height: 1;
   color: var(--accent);
 }
 .prose blockquote {
@@ -356,8 +393,20 @@ main:has(.launcher) {
   font-size: 0.9rem;
   color: var(--text-muted);
 }
+.prose .footnotes ol {
+  list-style: decimal;
+  margin: 0.6em 0 0;
+  padding-left: 1.35em;
+  border: none;
+  counter-reset: none;
+}
 .prose .footnotes li {
   color: var(--text-muted);
+  padding: 0.25em 0;
+  border: none;
+}
+.prose .footnotes li::before {
+  content: none;
 }
 .prose sup a {
   text-decoration: none;
