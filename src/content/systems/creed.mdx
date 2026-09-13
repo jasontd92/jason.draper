@@ -103,7 +103,7 @@ Very important to note here: our software runs in live financial audits, with se
 
 I am a big fan of the concept of [backpressure](https://www.humanlayer.dev/blog/context-efficient-backpressure): the systems and code that ground the agent and prevent sloppy implementation, code bloat, and generally keep agents on the efficient path — lint, type checks, dead-code scans, tests, proof-of-work, adversarial review, and so on.
 
-Proof-of-work was a great example of backpressure at merge: screenshots from the fixed dev environment empirically proved to human and agent alike that the app compiled, the full stack still works, and the UI didn't regress — multiple questions at a glance. From there, a reviewer can immediately drill the known dangerous diffs, if any, without needing to check out the feature branch and boot up a new local instance themselves.
+Proof-of-work was a great example of backpressure before merge approval: screenshots from the fixed dev environment empirically proved to human and agent alike that the app compiled, the full stack still works, and the UI didn't regress — multiple questions at a glance. From there, a reviewer can immediately drill the known dangerous diffs, if any, without needing to check out the feature branch and boot up a new local instance themselves.
 
 The scarce, finite resource being protected throughout was **human attention**. The visualization below shows how ~59% of all Creed PRs were found, fixed, and approved without any human intervention.
 
