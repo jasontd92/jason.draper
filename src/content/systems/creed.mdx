@@ -11,9 +11,9 @@ import CreedForces from '../../components/CreedForces.astro';
 
 Software factories are a contested topic, with some teams claiming completely [lights-off](https://www.strongdm.com/blog/the-strongdm-software-factory-building-software-with-ai) factories — where nobody reads or manages a single line of code. The [other side](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md) says that lights-off does not hold on complex, scaled, production codebases.
 
-[Punchcard](https://punchcard.com) is a financial audit platform ingesting and checking thousands of documents every day in live audits, with a large breadth of features and systems to maintain. All said, the constraints as the platform relentlessly grew were very real: [Nathan Turnbow](https://www.linkedin.com/in/turnbow/) and I had a team 1–5% the size of the incumbents, in an industry where reliability meant everything, while also seeking to spend every minute with customers working on novel problems and keeping a lead on innovation in our space.
+[Punchcard](https://punchcard.com) is a platform ingesting and checking thousands of documents every day in live financial audits, with both a large breadth of features and complexity to maintain. The constraints as the platform relentlessly grew were very real: [Nathan Turnbow](https://www.linkedin.com/in/turnbow/) and I had a team 1–5% the size of the incumbents, in an industry where reliability meant everything, while also seeking to spend every minute with customers working on novel problems and keeping a lead on innovation in our space.
 
-It didn't take long for the idea of an internal engineering agent to germinate and sprout in my mind, before the "factory" term was coined, but it was certainly that same shape of solution.
+It didn't take long for the idea of an internal engineering agent to germinate, sprout, and take hold. This was before the "factory" term was coined, though it certainly fit that problem shape.
 
 The two ambitious targets were:
 
@@ -44,7 +44,7 @@ Rather than a single orchestrator, Creed is a distributed graph of ~40 actions (
 - **Verify** checks those missions against reality (browser + what prod is already flagging).
 - **Fix** turns a verified finding into a merged, re-tested change.
 
-The jobs themselves are each self-contained. A cron, a label, or a deploy triggers and enqueues work; the worker writes a persisted artifact and exits. Subsequent actions read from the same memory and global state. Orchestrated entirely through GitHub Actions and self-hosted runners on AWS (before cron jobs and Cloud Agents started shipping as features with tools like Cursor and Linear).
+The jobs themselves are each self-contained. A cron, a label, or a deploy triggers and enqueues work; the worker writes a persisted artifact and exits. Subsequent actions read from the same memory and global state. Orchestrated entirely through GitHub Actions and self-hosted ARC runners on EKS Fargate (before cron jobs and Cloud Agents started shipping as features with tools like Cursor and Linear).
 
 ## High signal or bust
 
@@ -95,7 +95,7 @@ The core set of roles required by Creed to operate autonomously is shown in the 
 
 <CreedDuties />
 
-These roles in aggregate ensure that both progress and sustainability are maximized equally.
+These roles in aggregate are mutually exclusive, collectively exhaustive, and balanced to ensure that both progress and sustainability are maximized equally.
 
 <CreedForces />
 
@@ -103,7 +103,7 @@ Very important to note here: our software runs in live financial audits, with se
 
 I am a big fan of the concept of [backpressure](https://www.humanlayer.dev/blog/context-efficient-backpressure): the systems and code that ground the agent and prevent sloppy implementation, code bloat, and generally keep agents on the efficient path — lint, type checks, dead-code scans, tests, proof-of-work, adversarial review, and so on.
 
-Proof-of-work was a great example of backpressure at merge: a screenshot empirically proved to human and agent alike that the app compiled, the full stack still works, and the UI didn't regress — multiple questions at a glance. From there, a reviewer can immediately drill the known dangerous diffs, if any, without needing to check out the feature branch and boot up a new local instance themselves.
+Proof-of-work was a great example of backpressure at merge: screenshots from the fixed dev environment empirically proved to human and agent alike that the app compiled, the full stack still works, and the UI didn't regress — multiple questions at a glance. From there, a reviewer can immediately drill the known dangerous diffs, if any, without needing to check out the feature branch and boot up a new local instance themselves.
 
 The scarce, finite resource being protected throughout was **human attention**. The visualization below shows how ~59% of all Creed PRs were found, fixed, and approved without any human intervention.
 
@@ -132,7 +132,7 @@ A nightly agent looks at the north-star fleet metrics — PRs merged, missions r
   </div>
 </div>
 
-This is coverage that let us both prevent *and* react to bugs. Though I don't have exact support-case numbers, the shift has been noticeable. From my own anecdotal experience I'd estimate we've fielded close to a fifth of the bug reports while the customer base and activity grew about 5–6× over the same period.
+This is coverage that let us both prevent *and* react to bugs. Though I don't have exact support-case numbers, the shift has been noticeable. From my own anecdotal experience I'd estimate we've fielded close to a fifth of the bug reports while the customer base and activity grew more than 5× over the same period.
 
 Was it just better models? Those should also have helped humans ship fewer bugs. In our own repo, bugs caught in code review did not drop by anything significant over the same period.
 
